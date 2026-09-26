@@ -91,3 +91,29 @@ button.flash{box-shadow:0 0 0 2px var(--cyan) inset}
 .langBtn{flex:none;padding:4px 10px;font-size:12px;font-weight:700;text-align:center;color:var(--cyan);border-color:var(--cyan)}
 #start .langBtn{font-size:14px;padding:6px 14px}
 #side .titlebar h1{font-size:14px;letter-spacing:2px;line-height:1.25}
+
+/* ---------- ออกจากเกม / หน้าขอบคุณ ---------- */
+.tbtns{display:flex;gap:6px;flex:none}
+#quitBtn{padding:4px 10px;font-size:12px;font-weight:700;text-align:center;color:#ff8a7a;border-color:#6b2f28}
+#quitBtn:hover{border-color:var(--red)}
+.overbtns{display:flex;gap:12px}
+#over #overQuit{background:var(--panel2);color:var(--txt);border:1px solid var(--line)}
+.modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(5,6,8,.82);backdrop-filter:blur(4px);padding:16px;box-sizing:border-box}
+.modal.hide{display:none}
+.modal .card{background:linear-gradient(180deg,#141920,#0d1014);border:1px solid var(--line);border-top:3px solid var(--amber);padding:22px 24px;width:min(420px,100%);box-sizing:border-box;max-height:100%;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.modal .note{color:var(--mut);font-size:13px;line-height:1.55}
+.modal .center{text-align:center}
+.modal button{text-align:center;font-size:15px;padding:10px 14px}
+.modal button.primary{background:var(--amber);color:#0d1014;border:none}
+.modal button.primary:hover{background:#ffc15c}
+.mtitle{font-size:20px;font-weight:700;color:var(--txt)}
+.mbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+#quitYes{background:#b8321f;color:#fff}
+#quitYes:hover{background:var(--red)}
+#bye .card{width:min(400px,100%);align-items:stretch}
+#bye .logo{font-size:22px;font-weight:700;letter-spacing:4px;line-height:1.2;color:var(--amber);text-shadow:0 0 14px rgba(242,169,59,.35);text-align:center}
+#bye .thanks{font-size:26px;font-weight:700;color:var(--cyan);text-align:center;text-shadow:0 0 14px rgba(39,242,208,.3)}
+.pp{align-self:center;background:#fff;border-radius:6px;padding:0 10px 10px;display:flex;flex-direction:column;align-items:center}
+.pphead{width:100%;margin:0 -10px 8px;padding:6px 0;background:#113566;color:#fff;font-weight:700;letter-spacing:1px;text-align:center;border-radius:6px 6px 0 0;box-sizing:content-box;padding-left:10px;padding-right:10px}
+#ppqr{display:block;width:220px;height:220px;image-rendering:pixelated}
+@media (max-height:560px){#ppqr{width:160px;height:160px}#bye .thanks{font-size:20px}}

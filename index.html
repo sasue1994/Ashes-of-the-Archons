@@ -23,7 +23,7 @@
   </div>
   <div id="side">
     <button data-act="menu" class="touchonly" data-en="✕ Close panel">✕ ปิดแผงคำสั่ง</button>
-    <div class="titlebar"><h1>ASHES OF THE ARCHONS</h1><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button></div>
+    <div class="titlebar"><h1>ASHES OF THE ARCHONS</h1><div class="tbtns"><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button><button id="quitBtn" title="ออกจากเกม" data-en-title="Leave game" data-en="Exit">ออก</button></div></div>
     <div id="lvl"></div>
     <div class="cred">$ <span id="cred">0</span></div>
     <div><div class="sec"><span data-en="Producing:">กำลังผลิต:</span> <span id="qname">-</span></div><div class="bar"><i id="qbar"></i></div></div>
@@ -86,7 +86,22 @@
   </div>
 </div></div>
 <div id="rotate" data-en="Rotate your phone to landscape to play">หมุนจอเป็นแนวนอนเพื่อเล่น</div>
-<div id="over"><div id="overtxt"></div><button id="again" data-en="Play again">เล่นใหม่</button></div>
+<div id="over"><div id="overtxt"></div><div class="overbtns"><button id="again" data-en="Play again">เล่นใหม่</button><button id="overQuit" data-en="Leave game">ออกจากเกม</button></div></div>
+<!-- ยืนยันออกจากเกม (เกมหยุดชั่วคราวระหว่างถาม) -->
+<div id="quit" class="modal hide"><div class="card">
+  <div class="mtitle" data-en="Leave the game?">ออกจากเกมหรือไม่?</div>
+  <div class="note" data-en="Progress in this match will be lost.">ความคืบหน้าของแมตช์นี้จะหายไป</div>
+  <div class="mbtns"><button id="quitYes" class="primary" data-en="Leave">ออกจากเกม</button><button id="quitNo" data-en="Keep playing">เล่นต่อ</button></div>
+</div></div>
+<!-- หน้าขอบคุณหลังออกจากเกม + สนับสนุนผ่าน PromptPay -->
+<div id="bye" class="modal hide"><div class="card">
+  <div class="logo">ASHES OF THE ARCHONS</div>
+  <div class="thanks" data-en="Thank you for playing!">ขอบคุณที่เข้ามาเล่น!</div>
+  <div class="note" data-en="Hope you enjoyed the battle, Commander. If you like the game, you can support its development via PromptPay.">หวังว่าจะสนุกกับการรบครั้งนี้นะผู้บัญชาการ ถ้าชอบเกมนี้ ร่วมสนับสนุนผู้พัฒนาได้ผ่าน PromptPay</div>
+  <div class="pp"><div class="pphead">PromptPay</div><img id="ppqr" alt="QR PromptPay" width="220" height="220"></div>
+  <div class="note center" data-en="Scan with any Thai banking app · any amount">สแกนด้วยแอปธนาคารใดก็ได้ · จำนวนเท่าไรก็ได้</div>
+  <button id="byeAgain" class="primary" data-en="Play again">เล่นอีกครั้ง</button>
+</div></div>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

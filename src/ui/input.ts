@@ -4,6 +4,7 @@ import { BUILD, T, type TypeKey } from '../sim/data';
 import { seen } from '../sim/fog';
 import { placeBuilding, queueUnit } from '../sim/production';
 import { strike } from '../sim/ruins';
+import { ui } from './exit';
 import { S, msg, type Ent, type Pt } from '../sim/state';
 
 // สถานะการควบคุมของผู้เล่น (ไม่ใช่ส่วนของ sim)
@@ -77,6 +78,7 @@ export function initInput(cv: HTMLCanvasElement) {
   const mpos = (ev: MouseEvent) => { const b = cv.getBoundingClientRect(); mouse.x = ev.clientX - b.left; mouse.y = ev.clientY - b.top };
   addEventListener('keydown', ev => {
     if ((ev.target as HTMLElement)?.tagName === 'INPUT') return; // กำลังพิมพ์ชื่อ ไม่ใช่สั่งเกม
+    if (ui.paused) return; // เปิดหน้าต่างถามออกจากเกมอยู่
     const k = ev.key.toLowerCase(); keys[ev.key] = true;
     if (k === 'a') startAmove();
     if (k === 's') stopSelected();
