@@ -22,7 +22,8 @@ msg(tr('ส่งหน่วยสอดแนมหาซากโบราณ
 
 let uiT = 0, last = performance.now();
 function frame(t: number) {
-  const dt = Math.min(.05, (t - last) / 1000), now = t / 1000; last = t;
+  // เวลาของ rAF เฟรมแรกอาจน้อยกว่า performance.now() ตอนโหลด → กันไม่ให้ dt ติดลบ
+  const dt = Math.min(.05, Math.max(0, (t - last) / 1000)), now = t / 1000; last = t;
   scrollCam(dt);
   if (!S.over && S.started) update(dt); // รอผู้เล่นเลือกระดับ AI ก่อน
   if (reveal) { vis.fill(1); exp.fill(1) }
