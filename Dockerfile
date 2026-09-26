@@ -10,7 +10,7 @@ RUN npm run build
 
 # ---- runtime ----
 FROM nginx:1.29-alpine
-# Railway injects PORT at runtime; the nginx image renders templates with envsubst on start.
+# PORT can be overridden at runtime; the nginx image renders templates with envsubst on start.
 ENV PORT=8080
 COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist /usr/share/nginx/html

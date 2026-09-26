@@ -258,8 +258,7 @@ src/
 docs/GAME_PLAN.md  แผนพัฒนาเกมฉบับเต็ม
 legacy/            ตัววาด 2D (PixiJS) รุ่นเก่า และต้นแบบแรก เก็บไว้อ้างอิง
 Dockerfile         build เกมแล้วเสิร์ฟด้วย nginx (ตั้งค่าอยู่ที่ deploy/nginx.conf.template)
-railway.json       ตั้งค่า deploy บน Railway
-.github/workflows/ CI/CD: ตรวจ build → สร้าง Docker image → deploy
+.github/workflows/ CI/CD: ตรวจ build → สร้าง Docker image
 ```
 
 หลักสำคัญ: `sim/` ไม่รู้จักการวาดภาพเลย ส่วน `render/` อ่านสถานะจาก `sim/` เพื่อวาดอย่างเดียว ไม่แก้ค่าอะไร
@@ -275,11 +274,9 @@ docker run -p 8080:8080 ashes-of-the-archons     # เปิดที่ http://
 ```
 
 - **nginx:** ใช้พอร์ตจากตัวแปร `PORT` (ค่าเริ่มต้น 8080) ไฟล์ใน `/assets/` แคชได้ 1 ปี เพราะชื่อไฟล์มี hash และมี `/healthz` ไว้ตรวจว่าเซิร์ฟเวอร์ยังทำงาน
-- **GitHub Actions** ([ci-cd.yml](.github/workflows/ci-cd.yml)) มี 3 ขั้น:
+- **GitHub Actions** ([ci-cd.yml](.github/workflows/ci-cd.yml)) มี 2 ขั้น:
   1. ทุก push และ pull request เข้า `main`: รัน `npm run build`
-  2. สร้าง Docker image แล้วส่งขึ้น GitHub Container Registry (`ghcr.io`)
-  3. push เข้า `main`: สั่ง Railway ให้ redeploy
-- **ตั้งค่า Railway:** ต้องตั้ง secret `RAILWAY_TOKEN` และ variable `RAILWAY_SERVICE` ใน GitHub environment ชื่อ `production` ถ้ายังไม่ได้ตั้ง ขั้น deploy จะข้ามไปเฉยๆ ไม่ขึ้น error
+  2. สร้าง Docker image แล้วส่งขึ้น GitHub Container Registry (`ghcr.io`) ส่วน pull request จะ build อย่างเดียว ไม่ push
 
 ## License
 

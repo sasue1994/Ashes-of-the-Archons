@@ -66,19 +66,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
-    name: Redeploy on Railway
-    needs: image
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
-    steps:
-      - name: Skip when Railway is not configured
-        if: env.RAILWAY_TOKEN == '' || env.RAILWAY_SERVICE == ''
-        run: echo "::notice::RAILWAY_TOKEN / RAILWAY_SERVICE not set — skipping redeploy."
-      - name: Redeploy service (pulls :latest)
-        if: env.RAILWAY_TOKEN != '' && env.RAILWAY_SERVICE != ''
-        run: npx -y @railway/cli@latest redeploy --service "$RAILWAY_SERVICE" --yes
