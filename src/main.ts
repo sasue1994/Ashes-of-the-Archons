@@ -36,3 +36,5 @@ function frame(t: number) {
   uiT -= dt; if (uiT <= 0) { uiT = .15; hudUpdate() }
 }
 requestAnimationFrame(frame);
+// เฟรมแรกวาดเสร็จแล้ว (callback ต่อจาก frame) → เอาหน้าโหลดออก
+requestAnimationFrame(() => document.documentElement.classList.add('ready'));
