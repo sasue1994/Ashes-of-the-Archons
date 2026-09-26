@@ -8,13 +8,18 @@ import { ui } from './exit';
 import { S, msg, type Ent, type Pt } from '../sim/state';
 
 // สถานะการควบคุมของผู้เล่น (ไม่ใช่ส่วนของ sim)
-export type Mode = null | 'amove' | 'strike' | 'place';
+export type Mode = null | 'amove' | 'strike' | 'place' | 'box';
 export const ctl = { mode: null as Mode, placeType: 'ref' as TypeKey };
-export const mouse = { x: 0, y: 0, in: false, drag: false, sx: 0, sy: 0 };
+// จุดเริ่มกรอบเลือกเก็บเป็นพิกัดโลก (wx,wy) กรอบจึงไม่เคลื่อนตามจอเมื่อกล้องเลื่อนระหว่างลาก
+export const mouse = { x: 0, y: 0, in: false, drag: false, wx: 0, wy: 0 };
 const keys: Record<string, boolean> = {};
 
 export const selected = () => S.ents.filter(e => e.sel && e.hp > 0);
 export const world = (): Pt => toWorld(mouse.x, mouse.y);
+function startBox(sx: number, sy: number) { const w = toWorld(sx, sy); mouse.wx = w.x; mouse.wy = w.y; mouse.drag = true }
+// มุมเริ่มของกรอบบนจอ ณ ตำแหน่งกล้องปัจจุบัน
+export const boxStart = () => toScreen(mouse.wx, mouse.wy);
+function endBox(ex: number, ey: number) { const s = boxStart(); mouse.drag = false; boxSelect(s.x, s.y, ex, ey); if (ctl.mode === 'box') ctl.mode = null }
 // หายูนิตใต้จุดที่คลิก: วัดระยะบนจอ ทั้งจากฐานบนพื้นและจากกลางลำตัว (ยูนิตมีความสูง คลิกโดนหัวก็ต้องเลือกได้)
 function entAt(p: Pt, f: (e: Ent) => boolean, pad = 6) {
   let best: Ent | null = null, bd = 1e9; const s = toScreen(p.x, p.y);
@@ -42,6 +47,10 @@ export const selectArmy = () => { for (const e of S.ents) e.sel = e.team === 0 &
 export const stopSelected = () => { for (const e of selected()) { e.mx = null; e.target = null; e.forced = false; e.amove = false } };
 export const clearSelection = () => { for (const e of S.ents) e.sel = false; ctl.mode = null };
 export const startAmove = () => { if (selected().length) ctl.mode = 'amove' };
+export function toggleBox() {
+  if (ctl.mode === 'box') { ctl.mode = null; return }
+  ctl.mode = 'box'; msg(tr('ลากบนแผนที่เพื่อตีกรอบเลือกยูนิต', 'Drag on the map to box-select units'), '#8fd0ff');
+}
 
 // คลิกซ้าย/แตะ ขณะอยู่ในโหมดพิเศษ; คืน true ถ้าจัดการแล้ว
 function modeAction(p: Pt) {
@@ -100,19 +109,24 @@ export function initInput(cv: HTMLCanvasElement) {
   cv.addEventListener('mousedown', ev => {
     mpos(ev); const p = world();
     if (ev.button === 1) { ev.preventDefault(); pan = { x: ev.clientX, y: ev.clientY }; return }
-    if (ev.button === 0) { if (modeAction(p)) return; mouse.drag = true; mouse.sx = mouse.x; mouse.sy = mouse.y }
+    if (ev.button === 0) { if (modeAction(p)) return; startBox(mouse.x, mouse.y) }
     if (ev.button === 2) { if (ctl.mode) { ctl.mode = null; return } command(p) }
   });
+  // ระหว่างลากกรอบ ติดตามเมาส์ทั้งหน้าต่าง (ผ่านมินิแมพ/แผงข้างได้) โดยจำกัดให้อยู่ในจอเกม
+  addEventListener('mousemove', ev => {
+    if (!mouse.drag) return;
+    mpos(ev); mouse.x = Math.max(0, Math.min(cam.sw, mouse.x)); mouse.y = Math.max(0, Math.min(cam.sh, mouse.y));
+  });
   addEventListener('mouseup', ev => {
-    if (ev.button !== 0 || !mouse.drag) return; mouse.drag = false;
-    boxSelect(mouse.sx, mouse.sy, mouse.x, mouse.y);
+    if (ev.button !== 0 || !mouse.drag) return;
+    endBox(mouse.x, mouse.y);
   });
   initTouch(cv);
 }
 
 // ---------- จอสัมผัส ----------
 // แตะยูนิตเรา = เลือก (แตะซ้ำเร็วๆ = เลือกชนิดเดียวกันทั้งจอ) · แตะพื้น/ศัตรู = เดิน/โจมตี
-// ลากนิ้วเดียว = เลื่อนแผนที่ · กดค้าง 0.35 วิ แล้วลาก = ตีกรอบเลือก · สองนิ้ว = เลื่อน + บีบซูม
+// ลากนิ้วเดียว = เลื่อนแผนที่ · กดค้าง 0.35 วิ แล้วลาก หรือกดปุ่ม ⬚ กรอบ แล้วลาก = ตีกรอบเลือก · สองนิ้ว = เลื่อน + บีบซูม
 // โหมดวางอาคาร/ยิงซูเปอร์เวพอน: ลากเพื่อเล็ง ปล่อยนิ้วเพื่อยืนยัน
 const LONG_PRESS = 350, MOVE_TOL = 12, TOUCH_PAD = 14;
 function initTouch(cv: HTMLCanvasElement) {
@@ -132,9 +146,10 @@ function initTouch(cv: HTMLCanvasElement) {
     if (pts.size > 1) { if (one) { clearTimeout(one.timer); mouse.drag = false } one = null; return } // เริ่มใช้สองนิ้ว
     mouse.x = p.x; mouse.y = p.y;
     one = { id: ev.pointerId, sx: p.x, sy: p.y, moved: false, box: false, timer: 0 };
+    if (ctl.mode === 'box') { one.box = true; startBox(p.x, p.y); return } // โหมดกรอบ: ลากได้ทันที
     if (!ctl.mode) one.timer = window.setTimeout(() => {
       if (!one || one.moved) return;
-      one.box = true; mouse.drag = true; mouse.sx = one.sx; mouse.sy = one.sy; navigator.vibrate?.(15);
+      one.box = true; startBox(one.sx, one.sy); navigator.vibrate?.(15);
     }, LONG_PRESS);
   });
   cv.addEventListener('pointermove', ev => {
@@ -162,7 +177,7 @@ function initTouch(cv: HTMLCanvasElement) {
     const o = one; one = null; clearTimeout(o.timer);
     if (ev.type === 'pointercancel') { mouse.drag = false; return }
     const p = local(ev); mouse.x = p.x; mouse.y = p.y;
-    if (o.box) { mouse.drag = false; boxSelect(o.sx, o.sy, p.x, p.y); return }
+    if (o.box) { endBox(p.x, p.y); return }
     if (ctl.mode === 'place' || ctl.mode === 'strike') { modeAction(world()); return }
     if (!o.moved) tap(world(), ev.timeStamp);
   };
@@ -188,7 +203,7 @@ function initTouch(cv: HTMLCanvasElement) {
   // ปุ่มลอยบนจอ + ลิ้นชักแผงคำสั่ง
   const act: Record<string, () => void> = {
     menu: () => document.body.classList.toggle('side-open'),
-    all: selectArmy, amove: startAmove, stop: stopSelected, clear: clearSelection,
+    all: selectArmy, amove: startAmove, stop: stopSelected, clear: clearSelection, box: toggleBox,
     full: () => {
       const d = document as Document & { webkitFullscreenElement?: Element };
       if (document.fullscreenElement || d.webkitFullscreenElement) { document.exitFullscreen?.(); return }
@@ -206,9 +221,10 @@ const drawerOpen = () => document.body.classList.contains('side-open');
 function closeDrawer() { document.body.classList.remove('side-open') }
 
 export function scrollCam(dt: number) {
-  const s = 900 * dt;
-  if (keys.ArrowLeft || (mouse.in && mouse.x < 12)) panBy(s, 0);
-  if (keys.ArrowRight || (mouse.in && mouse.x > cam.sw - 12)) panBy(-s, 0);
-  if (keys.ArrowUp || (mouse.in && mouse.y < 12)) panBy(0, s);
-  if (keys.ArrowDown || (mouse.in && mouse.y > cam.sh - 12)) panBy(0, -s);
+  // เลื่อนกล้องที่ขอบจอใช้กับเมาส์เท่านั้น (บนจอสัมผัส นิ้วที่ลากกรอบถึงขอบต้องไม่ทำให้แผนที่เลื่อน)
+  const s = 900 * dt, edge = mouse.in && !document.body.classList.contains('touch');
+  if (keys.ArrowLeft || (edge && mouse.x < 12)) panBy(s, 0);
+  if (keys.ArrowRight || (edge && mouse.x > cam.sw - 12)) panBy(-s, 0);
+  if (keys.ArrowUp || (edge && mouse.y < 12)) panBy(0, s);
+  if (keys.ArrowDown || (edge && mouse.y > cam.sh - 12)) panBy(0, -s);
 }

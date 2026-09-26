@@ -15,15 +15,16 @@
      (data-en-ph = placeholder, data-en-title = title) สลับด้วยปุ่ม .langBtn -->
 <div id="wrap">
   <div id="game"><div id="msgs"></div><div id="esw"></div>
+    <!-- มินิแมพ: ลอยมุมล่างซ้ายของจอเกม -->
+    <canvas id="mini" width="228" height="171"></canvas>
     <!-- ปุ่มสำหรับจอสัมผัส (แสดงเมื่อ body มี class touch) -->
     <div id="touchbar">
-      <button data-act="all" data-en="Select all">เลือกทั้งหมด</button><button data-act="amove" data-en="Attack">บุก</button><button data-act="stop" data-en="Stop">หยุด</button><button data-act="clear" data-en="Cancel">ยกเลิก</button>
+      <button data-act="all" data-en="<b>⊕</b>All"><b>⊕</b>ทั้งหมด</button><button data-act="box" data-en="<b>⬚</b>Box"><b>⬚</b>กรอบ</button><button data-act="amove" data-en="<b>⚔</b>Attack"><b>⚔</b>บุก</button><button data-act="stop" data-en="<b>■</b>Stop"><b>■</b>หยุด</button><button data-act="clear" data-en="<b>✕</b>Cancel"><b>✕</b>ยกเลิก</button>
     </div>
-    <div id="touchtop"><button data-act="full" title="เต็มจอ" data-en-title="Fullscreen">⛶</button><button data-act="menu" id="menuBtn" data-en="☰ Command">☰ คำสั่ง</button></div>
+    <div id="touchtop"><div id="tcredbox"><span id="tcred">$0</span><i id="tqn"></i><div class="tq"><i id="tqbar"></i></div></div><button data-act="full" title="เต็มจอ" data-en-title="Fullscreen">⛶</button><button data-act="menu" id="menuBtn" data-en="☰ Command">☰ คำสั่ง</button></div>
   </div>
   <div id="side">
-    <button data-act="menu" class="touchonly" data-en="✕ Close panel">✕ ปิดแผงคำสั่ง</button>
-    <div class="titlebar"><h1>ASHES OF THE ARCHONS</h1><div class="tbtns"><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button><button id="quitBtn" title="ออกจากเกม" data-en-title="Leave game" data-en="Exit">ออก</button></div></div>
+    <div class="titlebar"><h1>ASHES OF THE ARCHONS</h1><div class="tbtns"><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button><button id="quitBtn" title="ออกจากเกม" data-en-title="Leave game" data-en="Exit">ออก</button><button data-act="menu" class="touchonly closeBtn" title="ปิดแผงคำสั่ง" data-en-title="Close panel">✕</button></div></div>
     <div id="lvl"></div>
     <div class="cred">$ <span id="cred">0</span></div>
     <div><div class="sec"><span data-en="Producing:">กำลังผลิต:</span> <span id="qname">-</span></div><div class="bar"><i id="qbar"></i></div></div>
@@ -35,7 +36,6 @@
     <div><div class="sec"><span data-en="Weapon research (needs Lab):">วิจัยอัปเกรดอาวุธ (ต้องมีห้องแล็บ):</span> <span id="rname">-</span></div><div class="bar"><i id="rbar"></i></div></div>
     <div class="btns" id="rbtns"></div>
     <div id="sw" style="display:none"><div class="sec" data-en="Orbital Strike">ลำแสงวงโคจร</div><div class="bar"><i id="swbar"></i></div><button id="swbtn" style="width:100%;margin-top:4px;text-align:center" disabled data-en="Fire Orbital Strike">ยิงลำแสงจากวงโคจร</button></div>
-    <canvas id="mini" width="228" height="171"></canvas>
     <div><div class="sec" data-en="Blueprints owned">พิมพ์เขียวที่มี</div><div id="owned">-</div></div>
     <div id="help" data-en="
       <b>Left drag</b> select units · <b>Right click</b> move/attack/cancel<br>

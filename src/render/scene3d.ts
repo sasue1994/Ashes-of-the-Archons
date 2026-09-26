@@ -15,7 +15,7 @@ import { tr } from '../sim/i18n';
 import { validPlace } from '../sim/production';
 import { awake, wakeText } from '../sim/ruins';
 import { S, done, type Ent, type Ruin } from '../sim/state';
-import { ctl, mouse, world } from '../ui/input';
+import { boxStart, ctl, mouse, world } from '../ui/input';
 import { COS, SIN, cam, setScreen, toScreen } from './camera';
 import { Builder, debris, modelFor, oreModel, ruinModel, useToonPalette, type Model } from './models';
 import { TOON, outlineGeo, outlineMat as makeOutline, toonGroundMat, toonMat, unitOutline } from './toon';
@@ -323,8 +323,14 @@ function drawOverlay(now: number) {
     text(strike ? tr('เลือกเป้าหมาย', 'Pick target') : tr('เดินพร้อมยิง', 'Attack-move'), mouse.x, mouse.y + R * cam.zoom * SIN + 18, col);
   }
   if (mouse.drag) {
-    g.beginPath(); g.roundRect(Math.min(mouse.sx, mouse.x), Math.min(mouse.sy, mouse.y), Math.abs(mouse.x - mouse.sx), Math.abs(mouse.y - mouse.sy), 6);
+    const s = boxStart(), x0 = Math.min(s.x, mouse.x), y0 = Math.min(s.y, mouse.y), x1 = Math.max(s.x, mouse.x), y1 = Math.max(s.y, mouse.y);
+    g.beginPath(); g.roundRect(x0, y0, x1 - x0, y1 - y0, 6);
     g.fillStyle = 'rgba(125,255,154,.1)'; g.fill(); stroke('#7dff9a', 1.5);
+    // ไฮไลต์ยูนิตที่จะถูกเลือกเมื่อปล่อย (เกณฑ์เดียวกับ boxSelect)
+    if (x1 - x0 >= 5 || y1 - y0 >= 5) for (const e of S.ents) {
+      if (e.team !== 0 || e.t.bld || e.hp <= 0) continue;
+      const q = toScreen(e.x, e.y, 8); if (q.x >= x0 && q.x <= x1 && q.y >= y0 && q.y <= y1) { ring(e.x, e.y, e.t.r + 5); stroke('#7dff9a', 2, .9) }
+    }
   }
 }
 

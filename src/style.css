@@ -6,11 +6,11 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:13px "
 #game canvas{display:block}
 #msgs{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:3px;pointer-events:none;font-weight:600;font-size:14px}
 #msgs div{background:rgba(10,12,15,.82);border-left:3px solid var(--amber);padding:3px 12px 3px 9px;align-self:flex-start;clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%)}
-#esw{position:absolute;right:10px;top:10px;display:none;background:rgba(10,12,15,.82);border-right:3px solid var(--red);padding:4px 12px;color:#ff8a6a;font-weight:600;pointer-events:none}
+#esw{position:absolute;right:10px;top:194px;display:none;background:rgba(10,12,15,.82);border-right:3px solid var(--red);padding:4px 12px;color:#ff8a6a;font-weight:600;pointer-events:none}
 #side{width:256px;background:linear-gradient(180deg,#12161b,#0d1014);border-left:2px solid var(--line);display:flex;flex-direction:column;gap:9px;padding:12px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 h1{font-size:19px;margin:0;letter-spacing:4px;font-weight:700;color:var(--amber);text-shadow:0 0 12px rgba(242,169,59,.35);border-bottom:1px solid var(--line);padding-bottom:6px}
 .cred{font-size:20px;font-weight:700;color:var(--amber);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);padding:3px 12px;align-self:flex-start;font-variant-numeric:tabular-nums;letter-spacing:1px}
-#mini{width:228px;height:171px;border:1px solid var(--line);outline:1px solid #000;cursor:crosshair;flex:none}
+#mini{position:absolute;right:10px;top:10px;z-index:4;width:228px;height:171px;border:1px solid var(--line);outline:1px solid #000;box-shadow:0 4px 16px rgba(0,0,0,.6);cursor:crosshair;touch-action:none}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 button{background:linear-gradient(180deg,var(--panel2),var(--panel));color:var(--txt);border:1px solid var(--line);border-radius:2px;padding:6px 8px;cursor:pointer;font:inherit;font-size:12px;font-weight:600;text-align:left;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%);transition:background .12s,border-color .12s}
 button:hover:not(:disabled){background:linear-gradient(180deg,#26303a,#1b2229);border-color:var(--amber)}
@@ -35,10 +35,25 @@ button.lock small{color:#ff7a5c}
 body.touch{overscroll-behavior:none;-webkit-user-select:none;-webkit-touch-callout:none}
 body.touch #touchbar{display:flex;position:absolute;left:8px;bottom:calc(8px + env(safe-area-inset-bottom));gap:6px;z-index:5}
 body.touch #touchtop{display:flex;position:absolute;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));gap:6px;z-index:5}
-body.touch #touchbar button,body.touch #touchtop button{font-size:14px;padding:10px 14px;min-width:52px;text-align:center;background:rgba(23,28,34,.88);backdrop-filter:blur(2px)}
-body.touch #menuBtn{border-color:var(--amber);color:var(--amber)}
+body.touch #touchbar button,body.touch #touchtop button{font-size:14px;padding:10px 14px;min-width:52px;min-height:48px;text-align:center;background:rgba(23,28,34,.88);backdrop-filter:blur(2px)}
+/* ปุ่มคำสั่งล่างซ้าย: สัญลักษณ์ใหญ่ + คำสั้นๆ ข้างใต้ */
+body.touch #touchbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 8px;min-width:56px;font-size:11px;line-height:1.1}
+body.touch #touchbar button b{font-size:19px;line-height:1}
+body.touch #touchbar button.on{border-color:#7dff9a;color:#7dff9a;box-shadow:0 0 0 1px #7dff9a inset}
+body.touch #touchtop{align-items:flex-end}
+body.touch #menuBtn{border-color:var(--amber);color:var(--amber);font-size:15px}
+/* เงิน + คิวผลิต ลอยเหนือปุ่มคำสั่ง (มองเห็นตลอด ไม่ต้องเปิดแผง) */
+#tcredbox{display:none}
+body.touch #tcredbox{display:block;position:absolute;right:0;bottom:calc(100% + 6px);min-width:110px;box-sizing:border-box;background:rgba(10,12,15,.85);border:1px solid var(--line);border-right:3px solid var(--amber);padding:3px 10px 4px;text-align:right;pointer-events:none;font-variant-numeric:tabular-nums}
+#tcred{font-size:17px;font-weight:700;color:var(--amber)}
+#tqn{font-style:normal;font-weight:700;color:var(--cyan);font-size:13px;margin-left:8px}
+#tcredbox .tq{height:3px;background:#0a0c0f;margin-top:2px}
+#tqbar{display:block;height:100%;width:0;background:var(--cyan);transition:width .15s}
+/* มินิแมพเล็กลงบนจอสัมผัส มุมขวาบน แผงแจ้งเตือนขวาบนเลื่อนลงไปอยู่ใต้มินิแมพ */
+body.touch #mini{width:150px;height:113px;right:calc(8px + env(safe-area-inset-right));top:calc(8px + env(safe-area-inset-top))}
+body.touch #esw{right:calc(8px + env(safe-area-inset-right));top:calc(129px + env(safe-area-inset-top))}
 /* แผงคำสั่งเป็นลิ้นชักเลื่อนออกจากขวา */
-body.touch #side{position:fixed;top:0;right:0;bottom:0;z-index:10;width:min(300px,78vw);transform:translateX(100%);transition:transform .2s;box-shadow:-8px 0 24px rgba(0,0,0,.6);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+body.touch #side{position:fixed;top:0;right:0;bottom:0;z-index:10;width:min(340px,80vw);gap:7px;padding:8px 10px;transform:translateX(100%);transition:transform .2s;box-shadow:-8px 0 24px rgba(0,0,0,.6);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 body.touch.side-open #side{transform:none}
 body.touch #side button{padding:9px 8px;font-size:13px}
 body.touch #help{display:none}
@@ -48,6 +63,28 @@ body.touch #esw{font-size:12px}
 @media (orientation:portrait){body.touch #rotate{display:flex;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;background:#0b0d10;color:var(--amber);font-size:20px;font-weight:700;letter-spacing:1px;text-align:center;padding:20px}}
 .touchonly{display:none}
 body.touch .touchonly{display:block;width:100%;text-align:center}
+/* หัวแผงบนจอสัมผัส: ซ่อนชื่อเกม เหลือแถวปุ่ม [ภาษา][ออก][✕ ปิด] ประหยัดที่ */
+body.touch #side .titlebar h1{display:none}
+body.touch #side .titlebar{justify-content:flex-end;padding-bottom:6px}
+body.touch #side .tbtns button{padding:8px 12px;min-height:38px}
+body.touch #side .closeBtn{width:auto;font-size:16px;min-width:48px;color:var(--amber);border-color:var(--amber)}
+body.touch .cred{display:none}
+/* ---------- ปุ่มซื้อยูนิต/อาคารบนจอสัมผัส: ตาราง 2 ช่องต่อแถว เน้นรูป ---------- */
+body.touch #btns,body.touch #bbtns{grid-template-columns:1fr 1fr;gap:6px}
+body.touch #side .ubtn{display:flex;flex-direction:column;align-items:stretch;gap:3px;padding:4px 4px 6px;min-height:92px}
+body.touch .ubtn .ico{width:100%;height:60px;box-sizing:border-box}
+body.touch .ubtn .bt{align-items:center;text-align:center}
+body.touch .ubtn b{font-size:12px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.touch .ubtn em,body.touch .ubtn .hk,body.touch .ubtn .ml{display:none}
+body.touch .ubtn .makes{justify-content:center;margin-top:0}
+body.touch .ubtn .makes img{width:20px;height:15px}
+body.touch .ubtn .cost{position:absolute;right:5px;top:5px;margin:0;background:rgba(10,12,15,.85);padding:0 5px;font-size:12px;font-weight:700}
+body.touch .ubtn .qn{left:5px;top:5px;font-size:15px;background:rgba(10,12,15,.85);padding:0 5px}
+body.touch .ubtn .qn:empty{display:none}
+/* ล็อกอยู่: รูปเป็นสีเทา + กุญแจกลางรูป (แตะเพื่อดูเหตุผล) */
+body.touch .ubtn.lock .ico{filter:grayscale(1) brightness(.55)}
+body.touch .ubtn.lock::after{content:"🔒";position:absolute;left:50%;top:34px;transform:translate(-50%,-50%);font-size:22px;pointer-events:none}
+body.touch #rbtns button{min-height:44px}
 /* ---------- หน้าเลือกระดับ AI ---------- */
 #start{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(5,6,8,.78);backdrop-filter:blur(3px);padding:16px;box-sizing:border-box}
 #start.hide{display:none}
@@ -84,6 +121,8 @@ button.link:hover:not(:disabled){background:none;color:var(--txt)}
 button.off{opacity:.5}
 button.off:hover:not(:disabled){border-color:var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel))}
 button.flash{box-shadow:0 0 0 2px var(--cyan) inset}
+button.off .cost{color:#ff7a5c}
+.ubtn .pg{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--cyan);box-shadow:0 0 6px var(--cyan);transition:width .15s;pointer-events:none}
 /* ---------- ปุ่มเปลี่ยนภาษา ---------- */
 .titlebar{display:flex;align-items:center;justify-content:space-between;gap:8px}
 #side .titlebar{border-bottom:1px solid var(--line);padding-bottom:6px}

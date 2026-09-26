@@ -7,7 +7,7 @@ import { i18n, tr, type Lang } from '../sim/i18n';
 import { RESEARCHED, canBuild, canPlace, canResearch, lockReason, queueUnit, researchReason, startResearch } from '../sim/production';
 import { awake, grantBP, holdIncome, wakeText } from '../sim/ruins';
 import { S, hooks, msg } from '../sim/state';
-import { startPlace, startStrike } from './input';
+import { ctl, startPlace, startStrike } from './input';
 
 const $ = (id: string) => document.getElementById(id)!;
 const btnEls = {} as Record<TypeKey, HTMLButtonElement>, bbtnEls = {} as Record<TypeKey, HTMLButtonElement>, rbtnEls = {} as Record<UpgKey, HTMLButtonElement>;
@@ -53,15 +53,18 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text = '') 
 function makeBtn(k: TypeKey, i?: number) {
   const t = T[k], b = el('button', 'ubtn'); b.title = i18n.lang === 'en' ? '' : t.en;
   const img = el('img', 'ico'); img.src = icon(k); img.alt = '';
-  const box = el('span', 'bt'); box.append(el('b', '', (i != null ? (i + 1) + '. ' : '') + t.name), el('em', '', t.role));
+  // เลขปุ่มลัดแยกเป็น span ไว้ซ่อนบนจอสัมผัส
+  const name = el('b'); if (i != null) name.append(el('span', 'hk', (i + 1) + '. ')); name.append(t.name);
+  const box = el('span', 'bt'); box.append(name, el('em', '', t.role));
   const cost = el('small', 'cost', '$' + t.cost);
   const mk = makes(k);
   if (mk.length) {
-    const row = el('span', 'makes', tr('ผลิต:', 'Makes:'));
+    const row = el('span', 'makes'); row.append(el('span', 'ml', tr('ผลิต:', 'Makes:')));
     for (const u of mk) { const m = el('img'); m.src = icon(u); m.alt = T[u].name; m.title = T[u].name; row.appendChild(m) }
     box.appendChild(row);
   }
-  b.append(img, box, cost, el('i', 'qn')); return b;
+  // .pg = แถบความคืบหน้าของยูนิตที่กำลังผลิตอยู่ (ที่ขอบล่างของปุ่ม)
+  b.append(img, box, cost, el('i', 'qn'), el('i', 'pg')); return b;
 }
 function btnLabel(b: HTMLButtonElement, k: TypeKey, ok: boolean) {
   // บรรทัดที่สอง: บทบาท หรือ เหตุผลที่ยังสร้างไม่ได้ (สีแดง)
@@ -162,20 +165,30 @@ export function initHud() {
   };
   const mm = $('mini') as HTMLCanvasElement;
   const nav = (ev: MouseEvent) => { const b = mm.getBoundingClientRect(); centerOn((ev.clientX - b.left) / b.width * W, (ev.clientY - b.top) / b.height * H) };
+  // pointer events: ใช้ได้ทั้งเมาส์และนิ้ว (ลากต่อได้แม้ลากออกนอกกรอบ)
   let dragging = false;
-  mm.addEventListener('mousedown', ev => { nav(ev); dragging = true });
-  mm.addEventListener('mousemove', ev => { if (dragging) nav(ev) });
-  addEventListener('mouseup', () => dragging = false);
+  mm.addEventListener('pointerdown', ev => { if (ev.button > 0) return; mm.setPointerCapture(ev.pointerId); dragging = true; nav(ev) });
+  mm.addEventListener('pointermove', ev => { if (dragging) nav(ev) });
+  const stop = () => { dragging = false };
+  mm.addEventListener('pointerup', stop); mm.addEventListener('pointercancel', stop);
+  mm.addEventListener('contextmenu', ev => ev.preventDefault());
   uiOwned();
 }
 
 // ส่วน HTML อัปเดตทุก 0.15 วิ พอ ไม่ต้องทุกเฟรม
 export function hudUpdate() {
-  const tm = S.teams[0]; $('cred').textContent = String(Math.floor(tm.credits));
-  const q = tm.queue[0];
+  const tm = S.teams[0], cr = String(Math.floor(tm.credits)); $('cred').textContent = cr;
+  document.querySelector('[data-act=box]')?.classList.toggle('on', ctl.mode === 'box');
+  const q = tm.queue[0], qp = q ? (100 * (1 - q.left / T[q.type].time)) + '%' : '0';
   $('qname').textContent = q ? T[q.type].name + (tm.queue.length > 1 ? ' (+' + (tm.queue.length - 1) + ')' : '') : '-';
-  $('qbar').style.width = q ? (100 * (1 - q.left / T[q.type].time)) + '%' : '0';
-  BUILD.forEach(k => btnLabel(btnEls[k], k, canBuild(0, k)));
+  $('qbar').style.width = qp;
+  // จอสัมผัส: เงิน + การผลิตแสดงบนจอเกมตลอด ไม่ต้องเปิดแผงคำสั่ง
+  $('tcred').textContent = '$' + cr; $('tqbar').style.width = qp;
+  $('tqn').textContent = tm.queue.length ? '⚙' + tm.queue.length : '';
+  BUILD.forEach(k => {
+    btnLabel(btnEls[k], k, canBuild(0, k));
+    (btnEls[k].querySelector('.pg') as HTMLElement).style.width = q && q.type === k ? qp : '0';
+  });
   PLACE.forEach(k => btnLabel(bbtnEls[k], k, canPlace(0, k)));
   // งานวิจัยที่ห้องแล็บ
   const r = tm.res;
