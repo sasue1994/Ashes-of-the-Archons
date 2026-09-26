@@ -1,0 +1,93 @@
+/* ธีม: แผงควบคุมทหารยุคหลังวิกฤต เหล็กกล้ามืด + ไฟสัญญาณอำพัน/ฟ้าโบราณ */
+:root{--bg:#0d1014;--panel:#171c22;--panel2:#1e252d;--line:#2c3540;--txt:#dfe5ea;--mut:#8a96a3;--amber:#f2a93b;--cyan:#27f2d0;--red:#ff4a2e}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:13px "Chakra Petch",system-ui,"Segoe UI",Tahoma,sans-serif;overflow:hidden;user-select:none}
+#wrap{display:flex;height:100%}
+#game{flex:1;min-width:0;position:relative;overflow:hidden}
+#game canvas{display:block}
+#msgs{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:3px;pointer-events:none;font-weight:600;font-size:14px}
+#msgs div{background:rgba(10,12,15,.82);border-left:3px solid var(--amber);padding:3px 12px 3px 9px;align-self:flex-start;clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+#esw{position:absolute;right:10px;top:10px;display:none;background:rgba(10,12,15,.82);border-right:3px solid var(--red);padding:4px 12px;color:#ff8a6a;font-weight:600;pointer-events:none}
+#side{width:256px;background:linear-gradient(180deg,#12161b,#0d1014);border-left:2px solid var(--line);display:flex;flex-direction:column;gap:9px;padding:12px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+h1{font-size:19px;margin:0;letter-spacing:4px;font-weight:700;color:var(--amber);text-shadow:0 0 12px rgba(242,169,59,.35);border-bottom:1px solid var(--line);padding-bottom:6px}
+.cred{font-size:20px;font-weight:700;color:var(--amber);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);padding:3px 12px;align-self:flex-start;font-variant-numeric:tabular-nums;letter-spacing:1px}
+#mini{width:228px;height:171px;border:1px solid var(--line);outline:1px solid #000;cursor:crosshair;flex:none}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+button{background:linear-gradient(180deg,var(--panel2),var(--panel));color:var(--txt);border:1px solid var(--line);border-radius:2px;padding:6px 8px;cursor:pointer;font:inherit;font-size:12px;font-weight:600;text-align:left;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%);transition:background .12s,border-color .12s}
+button:hover:not(:disabled){background:linear-gradient(180deg,#26303a,#1b2229);border-color:var(--amber)}
+button:active:not(:disabled){background:#12171c}
+button:disabled{opacity:.38;cursor:not-allowed}
+button small{display:block;color:var(--amber);font-size:11px;font-weight:500}
+button.lock small{color:#ff7a5c}
+.bar{height:6px;background:#0a0c0f;border:1px solid var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--amber) 0 6px,#c7801f 6px 8px);width:0;transition:width .15s}
+#sw .bar>i{background:repeating-linear-gradient(90deg,#ff4fd8 0 6px,#b0209a 6px 8px)}
+#bp{display:none;padding:8px;background:linear-gradient(160deg,#0f2a28,#12171c);border:1px solid var(--cyan);box-shadow:0 0 14px rgba(39,242,208,.2) inset}
+#bp button{width:100%;margin-top:6px;line-height:1.35}
+.tag{display:inline-block;font-size:10px;padding:0 5px;color:#0d1014;font-weight:700;margin-right:4px;letter-spacing:.5px}
+.sec{color:var(--mut);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;border-left:2px solid var(--amber);padding-left:6px}
+#owned{font-size:11px;line-height:1.7}
+#help{color:var(--mut);font-size:11px;line-height:1.55;background:var(--panel);border:1px solid var(--line);padding:8px 10px}
+#over{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(5,6,8,.8);backdrop-filter:blur(3px);font-size:56px;font-weight:700;letter-spacing:10px;gap:20px}
+#over button{font-size:18px;padding:10px 28px;text-align:center;background:var(--amber);color:#0d1014;font-weight:700;letter-spacing:2px;border:none}
+
+/* ---------- จอสัมผัส (มือถือ/แท็บเล็ต) ---------- */
+#touchbar,#touchtop,#rotate{display:none}
+body.touch{overscroll-behavior:none;-webkit-user-select:none;-webkit-touch-callout:none}
+body.touch #touchbar{display:flex;position:absolute;left:8px;bottom:calc(8px + env(safe-area-inset-bottom));gap:6px;z-index:5}
+body.touch #touchtop{display:flex;position:absolute;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));gap:6px;z-index:5}
+body.touch #touchbar button,body.touch #touchtop button{font-size:14px;padding:10px 14px;min-width:52px;text-align:center;background:rgba(23,28,34,.88);backdrop-filter:blur(2px)}
+body.touch #menuBtn{border-color:var(--amber);color:var(--amber)}
+/* แผงคำสั่งเป็นลิ้นชักเลื่อนออกจากขวา */
+body.touch #side{position:fixed;top:0;right:0;bottom:0;z-index:10;width:min(300px,78vw);transform:translateX(100%);transition:transform .2s;box-shadow:-8px 0 24px rgba(0,0,0,.6);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+body.touch.side-open #side{transform:none}
+body.touch #side button{padding:9px 8px;font-size:13px}
+body.touch #help{display:none}
+body.touch #msgs{font-size:12px;max-width:60vw}
+body.touch #msgs div{padding:2px 10px 2px 7px}
+body.touch #esw{font-size:12px}
+@media (orientation:portrait){body.touch #rotate{display:flex;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;background:#0b0d10;color:var(--amber);font-size:20px;font-weight:700;letter-spacing:1px;text-align:center;padding:20px}}
+.touchonly{display:none}
+body.touch .touchonly{display:block;width:100%;text-align:center}
+/* ---------- หน้าเลือกระดับ AI ---------- */
+#start{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(5,6,8,.78);backdrop-filter:blur(3px);padding:16px;box-sizing:border-box}
+#start.hide{display:none}
+#start .card{background:linear-gradient(180deg,#141920,#0d1014);border:1px solid var(--line);border-top:3px solid var(--amber);padding:22px 24px;width:min(460px,100%);box-sizing:border-box;max-height:100%;overflow-y:auto}
+#start .logo{font-size:24px;font-weight:700;letter-spacing:4px;line-height:1.2;color:var(--amber);text-shadow:0 0 14px rgba(242,169,59,.35)}
+#start .sub{color:var(--mut);margin:4px 0 14px;letter-spacing:1px}
+#lvls{display:flex;flex-direction:column;gap:8px}
+#lvls button{padding:12px 14px;font-size:17px;border-left:4px solid var(--c)}
+#lvls button small{color:var(--mut);font-size:12px;margin-top:3px}
+#lvls button.last{box-shadow:0 0 0 1px var(--c) inset}
+#lvl{font-size:12px;font-weight:600;letter-spacing:1px;margin-top:-4px}
+/* ---------- หน้า login แบบ Guest ---------- */
+#start .hide{display:none}
+#gname{width:100%;box-sizing:border-box;background:#0a0c0f;border:1px solid var(--line);border-left:3px solid var(--cyan);color:var(--txt);font:inherit;font-size:17px;padding:11px 12px;outline:none;margin-bottom:10px}
+#gname:focus{border-color:var(--cyan)}
+#guestBtn{width:100%;text-align:center;font-size:17px;padding:12px;background:var(--amber);color:#0d1014;border:none}
+#guestBtn:hover{background:#ffc15c}
+#start .note{color:var(--mut);font-size:12px;margin-top:8px}
+#hello{color:var(--cyan)}
+button.link{background:none;border:none;clip-path:none;color:var(--mut);text-decoration:underline;margin-top:10px;padding:4px 0}
+button.link:hover:not(:disabled){background:none;color:var(--txt)}
+/* ---------- ปุ่มมีรูปยูนิต: แถวละปุ่ม [รูป][ชื่อ/บทบาท][ราคา] ---------- */
+#btns,#bbtns{grid-template-columns:1fr}
+.ubtn{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:8px;position:relative;padding:4px 8px 4px 4px}
+.ubtn .ico{width:48px;height:38px;object-fit:contain;background:radial-gradient(#232a33,#0a0c0f);border:1px solid var(--line)}
+.ubtn .bt{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.ubtn b{font-size:13px}
+.ubtn em{font-style:normal;font-size:11px;color:var(--mut)}
+.ubtn.lock em{color:#ff7a5c}
+.ubtn .cost{color:var(--amber);font-size:12px;font-weight:600;align-self:start;margin-top:3px}
+.ubtn .makes{display:flex;align-items:center;flex-wrap:wrap;gap:3px;font-size:10px;color:var(--mut);margin-top:2px}
+.ubtn .makes img{width:24px;height:18px;object-fit:contain}
+.ubtn .qn{position:absolute;left:6px;top:2px;font-style:normal;font-weight:700;color:var(--cyan);font-size:12px;text-shadow:0 0 3px #000}
+button.off{opacity:.5}
+button.off:hover:not(:disabled){border-color:var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel))}
+button.flash{box-shadow:0 0 0 2px var(--cyan) inset}
+/* ---------- ปุ่มเปลี่ยนภาษา ---------- */
+.titlebar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#side .titlebar{border-bottom:1px solid var(--line);padding-bottom:6px}
+#side .titlebar h1{border:none;padding:0}
+.langBtn{flex:none;padding:4px 10px;font-size:12px;font-weight:700;text-align:center;color:var(--cyan);border-color:var(--cyan)}
+#start .langBtn{font-size:14px;padding:6px 14px}
+#side .titlebar h1{font-size:14px;letter-spacing:2px;line-height:1.25}

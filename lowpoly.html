@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>Ashes of the Archons · Low-poly</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- ต้นแบบกราฟิก Low-poly 3D (แยกจากเกมหลัก index.html) โค้ดอยู่ที่ src/lowpoly/ -->
+<style>
+html,body{margin:0;height:100%;background:#0b0d10;color:#dfe5ea;font:13px "Chakra Petch",system-ui,sans-serif;overflow:hidden;user-select:none}
+#view{position:fixed;inset:0}
+#view canvas{display:block}
+#hud{position:fixed;left:10px;top:10px;background:rgba(10,12,15,.82);border:1px solid #2c3540;border-top:3px solid #f2a93b;padding:8px 10px;min-width:230px}
+#hud .t{font-weight:700;letter-spacing:3px;color:#f2a93b}
+#hud .t span{color:#27f2d0;font-size:11px;letter-spacing:1px}
+#stats{margin:6px 0;line-height:1.5;color:#8a96a3}
+#stats b{color:#dfe5ea}
+.row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+button{background:#1e252d;color:#dfe5ea;border:1px solid #2c3540;padding:7px 10px;font:inherit;font-weight:600;cursor:pointer}
+button:hover{border-color:#f2a93b}
+a{color:#8a96a3;font-size:12px}
+#log{position:fixed;right:10px;top:10px;text-align:right;font-weight:600;max-width:45vw;pointer-events:none}
+#log div{background:rgba(10,12,15,.8);padding:2px 10px;margin-bottom:3px;display:inline-block;clear:both;float:right}
+#hint{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(10,12,15,.75);padding:4px 12px;color:#8a96a3;font-size:12px;white-space:nowrap;pointer-events:none}
+@media (max-width:700px){#hint{display:none}#log{display:none}}
+</style>
+</head>
+<body>
+<div id="view"></div>
+<div id="hud">
+  <div class="t">ASHES OF THE ARCHONS <span>LOW-POLY</span></div>
+  <div id="stats">…</div>
+  <div class="row"><button id="bArmy"></button><button id="bRotL">⟲</button><button id="bRotR">⟳</button></div>
+  <div class="row"><button id="bShadow"></button><button id="bBloom"></button></div>
+  <a id="back" href="./index.html"></a>
+</div>
+<div id="log"></div>
+<div id="hint"></div>
+<script type="module" src="/src/lowpoly/main.ts"></script>
+</body>
+</html>
