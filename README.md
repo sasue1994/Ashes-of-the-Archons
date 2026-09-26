@@ -19,7 +19,7 @@
 
 ```bash
 npm install
-npm run dev        # เปิดเกมที่ http://localhost:5173/
+npm run dev        # หน้า landing ที่ http://localhost:5173/ ตัวเกมที่ http://localhost:5173/play/
 ```
 
 `npm run dev` เปิดให้เครื่องอื่นในวง LAN เดียวกันเข้าได้ด้วย จึงลองเล่นบนมือถือได้ทันที
@@ -30,6 +30,7 @@ npm run dev        # เปิดเกมที่ http://localhost:5173/
 | `npm run dev` | รันเซิร์ฟเวอร์สำหรับพัฒนา (แก้โค้ดแล้วหน้าเว็บรีโหลดเอง) |
 | `npm run build` | ตรวจ TypeScript แล้วสร้างไฟล์สำหรับเผยแพร่ในโฟลเดอร์ `dist/` |
 | `npm run preview` | เปิดดูไฟล์ใน `dist/` ที่ build แล้ว |
+| `npm start` | รันเซิร์ฟเวอร์ production (`server/index.mjs`) เสิร์ฟ `dist/` + `/api/stats` ที่ http://localhost:8080/ |
 | `npm run typecheck` | ตรวจ TypeScript อย่างเดียว |
 
 ### ตัวเลือกในที่อยู่ (URL)
@@ -41,7 +42,7 @@ npm run dev        # เปิดเกมที่ http://localhost:5173/
 | `?touch` | บังคับใช้หน้าตาแบบจอสัมผัส (ไว้ทดสอบบนคอม) |
 | `#reveal` หรือ `#reveal@1600,1200` | เปิดดูทั้งแผนที่ และย้ายกล้องไปจุดที่ระบุ (ใช้ได้เฉพาะตอน `npm run dev`) |
 
-ใส่หลายตัวพร้อมกันได้ เช่น `http://localhost:5173/?style=toon&q=high`
+ตัวเลือกเหล่านี้ใช้กับหน้าเกม `/play/` ใส่หลายตัวพร้อมกันได้ เช่น `http://localhost:5173/play/?style=toon&q=high`
 
 ---
 
@@ -161,8 +162,8 @@ npm run dev        # เปิดเกมที่ http://localhost:5173/
 ### 6. ออกจากเกม
 
 กดปุ่ม **ออก** ที่หัวแผงคำสั่ง (หรือปุ่ม **ออกจากเกม** ตอนจบแมตช์) เกมจะหยุดชั่วคราวและถามยืนยัน
-กด **เล่นต่อ** หรือ `Esc` เพื่อกลับไปเล่น กด **ออกจากเกม** จะไปหน้าขอบคุณ
-หน้านั้นมี QR PromptPay ให้สนับสนุนผู้พัฒนา สแกนด้วยแอปธนาคารใดก็ได้ จำนวนเท่าไรก็ได้
+กด **เล่นต่อ** หรือ `Esc` เพื่อกลับไปเล่น กด **ออกจากเกม** จะกลับไปหน้า landing ตรงส่วนสนับสนุน พร้อมข้อความขอบคุณ
+ส่วนนั้นมีลิงก์โดเนท [ezdn.app/ellou](https://ezdn.app/ellou) และ QR PromptPay ให้สนับสนุนผู้พัฒนา สแกนด้วยแอปธนาคารใดก็ได้ จำนวนเท่าไรก็ได้
 
 ---
 
@@ -238,8 +239,15 @@ npm run dev        # เปิดเกมที่ http://localhost:5173/
 ### โครงสร้างโปรเจกต์
 
 ```
+index.html         หน้า landing ภาษาไทย (/)
+en/index.html      หน้า landing ภาษาอังกฤษ (/en/)
+play/index.html    ตัวเกม (/play/)
+public/            ไฟล์ที่คัดลอกไปตรงๆ: robots.txt, sitemap.xml, favicon, ภาพหน้าจอสำหรับ landing (img/)
+server/index.mjs   เซิร์ฟเวอร์ production: เสิร์ฟไฟล์ + /api/stats (ยอดจาก GA4)
 src/
   main.ts          เริ่มเกม + game loop
+  analytics.ts     Google Analytics 4 + แถบขอความยินยอมคุกกี้ (ใช้ทั้ง landing และเกม)
+  landing/         สคริปต์และ CSS ของหน้า landing
   sim/             ตรรกะของเกมทั้งหมด (ไม่อ้างถึงการวาดภาพ)
     data.ts          ค่าของยูนิต อาคาร พิมพ์เขียว ซาก ระดับ AI — ปรับสมดุลเกมที่ไฟล์นี้ที่เดียว
     state.ts         สถานะเกม (S) และชนิดข้อมูล
@@ -253,11 +261,11 @@ src/
   ui/
     hud.ts           แผงคำสั่ง มินิแมพ หน้าเริ่มเกม สลับภาษา
     input.ts         เมาส์ คีย์บอร์ด จอสัมผัส
-    exit.ts          ปุ่มออกจากเกม + หน้าขอบคุณ (QR PromptPay อยู่ที่ src/assets/)
+    exit.ts          ปุ่มออกจากเกม → กลับหน้า landing ส่วนสนับสนุน (QR PromptPay อยู่ที่ src/assets/)
   lowpoly/main.ts  หน้าทดลองภาพ (lowpoly.html / toon.html) ปล่อยทัพให้สองฝ่ายสู้กันเพื่อทดสอบความลื่น
 docs/GAME_PLAN.md  แผนพัฒนาเกมฉบับเต็ม
 legacy/            ตัววาด 2D (PixiJS) รุ่นเก่า และต้นแบบแรก เก็บไว้อ้างอิง
-Dockerfile         build เกมแล้วเสิร์ฟด้วย nginx (ตั้งค่าอยู่ที่ deploy/nginx.conf.template)
+Dockerfile         build เว็บแล้วรันด้วย server/index.mjs
 .github/workflows/ CI/CD: ตรวจ build → สร้าง Docker image
 ```
 
@@ -266,17 +274,37 @@ Dockerfile         build เกมแล้วเสิร์ฟด้วย ngi
 
 ### Deploy
 
-เกมเป็นเว็บแบบ static ล้วน (ไฟล์ใน `dist/`) เอาไปวางบนเว็บเซิร์ฟเวอร์ไหนก็ได้ ในโปรเจกต์เตรียม Docker ไว้ให้แล้ว
+เว็บเป็นไฟล์ static (ใน `dist/`) กับเซิร์ฟเวอร์ Node ตัวเล็กที่ไม่มี dependency ([server/index.mjs](server/index.mjs)) ในโปรเจกต์เตรียม Docker ไว้ให้แล้ว
 
 ```bash
-docker build -t ashes-of-the-archons .
-docker run -p 8080:8080 ashes-of-the-archons     # เปิดที่ http://localhost:8080/
+docker build --build-arg VITE_GA_ID=G-XXXXXXXXXX -t ashes-of-the-archons .
+docker run -p 8080:8080   -e GA_PROPERTY_ID=123456789   -e GA_CREDENTIALS="$(base64 -w0 service-account.json)"   ashes-of-the-archons                          # เปิดที่ http://localhost:8080/
 ```
 
-- **nginx:** ใช้พอร์ตจากตัวแปร `PORT` (ค่าเริ่มต้น 8080) ไฟล์ใน `/assets/` แคชได้ 1 ปี เพราะชื่อไฟล์มี hash และมี `/healthz` ไว้ตรวจว่าเซิร์ฟเวอร์ยังทำงาน
+- **เซิร์ฟเวอร์:** ใช้พอร์ตจากตัวแปร `PORT` (ค่าเริ่มต้น 8080) บีบอัด gzip ให้ ไฟล์ใน `/assets/` แคชได้ 1 ปี เพราะชื่อไฟล์มี hash มี `/healthz` ไว้ตรวจว่าเซิร์ฟเวอร์ยังทำงาน และ `/play` จะ redirect ไป `/play/`
 - **GitHub Actions** ([ci-cd.yml](.github/workflows/ci-cd.yml)) มี 2 ขั้น:
   1. ทุก push และ pull request เข้า `main`: รัน `npm run build`
   2. สร้าง Docker image แล้วส่งขึ้น GitHub Container Registry (`ghcr.io`) ส่วน pull request จะ build อย่างเดียว ไม่ push
+  - ตั้ง repository variable `GA_MEASUREMENT_ID` (เช่น `G-XXXXXXXXXX`) เพื่อฝังรหัส GA4 ลงใน image ถ้าไม่ตั้ง analytics จะปิด
+
+### SEO และสถิติผู้เล่น
+
+- หน้า landing มี title/description, Open Graph, `hreflang` ไทย ↔ อังกฤษ, JSON-LD (`VideoGame`, `FAQPage`), `robots.txt` และ `sitemap.xml` ทั้งหมดใช้โดเมน `https://www.ern-ai.com/` ถ้าเปลี่ยนโดเมนให้ค้นหาแล้วแทนที่ในไฟล์ `index.html`, `en/index.html`, `play/index.html` และ `public/`
+- หลัง deploy ให้ส่ง `https://www.ern-ai.com/sitemap.xml` ใน [Google Search Console](https://search.google.com/search-console)
+- **Google Analytics 4** นับ 3 อย่าง:
+
+  | event | เกิดเมื่อ | แสดงบน landing เป็น |
+  |---|---|---|
+  | `page_view` | เปิดหน้าใดก็ได้ในเว็บ (อัตโนมัติ) | ยอดเข้าชมเว็บ |
+  | `play_click` | กดปุ่มเล่นบนหน้า landing (มี parameter `location` = header/hero/final และ `lang`) | ครั้งที่กดเล่น |
+  | `game_start` | เลือกระดับ AI แล้วเริ่มแมตช์ (parameter `level`) | ผู้บัญชาการที่ลงสนาม (จำนวนคนไม่ซ้ำ) |
+  | `donate_click` | กดลิงก์โดเนทในส่วนสนับสนุน (parameter `method`) | (ไม่แสดง ดูใน GA) |
+
+- **แถบตัวเลขบน landing** ดึงจาก `/api/stats` ซึ่งเซิร์ฟเวอร์ถามจาก GA4 Data API แล้วเก็บไว้ 10 นาที ถ้ายังไม่ตั้งค่าหรือยังไม่มีข้อมูล แถบนี้จะซ่อนไปเอง ตั้งค่าดังนี้:
+  1. Google Cloud Console → เปิด **Google Analytics Data API** → สร้าง service account → สร้าง key แบบ JSON
+  2. GA4 → Admin → Property access management → เพิ่มอีเมลของ service account เป็น **Viewer**
+  3. รัน container พร้อม `GA_PROPERTY_ID` (เลข property ไม่ใช่ `G-...`) และ `GA_CREDENTIALS` (JSON หรือ base64 ของ JSON) ตัวเลือกเพิ่มเติม: `GA_START_DATE` (วันเริ่มนับ ค่าเริ่มต้น `2026-01-01`) และ `STATS_TTL` (วินาที ค่าเริ่มต้น 600)
+- **คุกกี้ (PDPA):** เว็บถามความยินยอมก่อน (Google Consent Mode v2) ถ้าผู้ใช้ปฏิเสธ GA จะไม่นับคนนั้นในรายงาน ตัวเลขบน landing จึงเป็นยอดของคนที่กดยอมรับเท่านั้น และ GA4 อาจใช้เวลาประมวลผลหลายชั่วโมงก่อนยอดจะขึ้น
 
 ## License
 

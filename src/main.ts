@@ -1,3 +1,4 @@
+import { initAnalytics } from './analytics';
 import { tr } from './sim/i18n';
 import { centerOn } from './render/camera';
 import { canvas, initScene, renderScene } from './render/scene3d';
@@ -10,6 +11,7 @@ import { initExit, ui } from './ui/exit';
 import { initInput, scrollCam } from './ui/input';
 import './style.css';
 
+initAnalytics();
 initWorld();
 initScene(document.getElementById('game')!);
 initInput(canvas());

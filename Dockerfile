@@ -6,12 +6,18 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+# GA4 Measurement ID (G-XXXXXXX) ฝังตอน build ถ้าว่าง = ปิด analytics
+ARG VITE_GA_ID=""
+ENV VITE_GA_ID=$VITE_GA_ID
 RUN npm run build
 
 # ---- runtime ----
-FROM nginx:1.29-alpine
-# PORT can be overridden at runtime; the nginx image renders templates with envsubst on start.
-ENV PORT=8080
-COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM node:24-alpine
+WORKDIR /app
+ENV NODE_ENV=production PORT=8080
+COPY server ./server
+COPY --from=build /app/dist ./dist
+USER node
 EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- "http://127.0.0.1:$PORT/healthz" || exit 1
+CMD ["node", "server/index.mjs"]

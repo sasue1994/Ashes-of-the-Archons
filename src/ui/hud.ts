@@ -1,3 +1,4 @@
+import { track } from '../analytics';
 import { cam, centerOn } from '../render/camera';
 import { fogCanvas, modelIcon } from '../render/scene3d';
 import { AI_LEVELS, BP, BP_KEYS, BUILD, CAT, H, PLACE, T, TEAM_COL, TIER_COL, UPG, UPG_KEYS, W, applyDataLang, type AiLevel, type BPKey, type TypeKey, type UpgKey } from '../sim/data';
@@ -117,7 +118,7 @@ function buildLevels() {
     const L = AI_LEVELS[k], b = document.createElement('button');
     b.style.setProperty('--c', L.col); if (k === (last || 'normal')) b.className = 'last';
     b.innerHTML = '<span style="color:' + L.col + '">AI ' + L.name + '</span><small>' + L.desc + '</small>';
-    b.onclick = () => { store.set('archon.level', k); chosen = k; startMatch(k); $('start').classList.add('hide'); lvlLabel() };
+    b.onclick = () => { store.set('archon.level', k); chosen = k; startMatch(k); track('game_start', { level: k }); $('start').classList.add('hide'); lvlLabel() };
     box.appendChild(b);
   }
 }

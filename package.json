@@ -9,6 +9,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "start": "node server/index.mjs",
     "typecheck": "tsc --noEmit"
   },
   "type": "module",

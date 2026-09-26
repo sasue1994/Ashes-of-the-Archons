@@ -2,117 +2,229 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<title>Ashes of the Archons</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ashes of the Archons · เกม RTS วางแผนการรบ เล่นฟรีบนเว็บ ไม่ต้องดาวน์โหลด</title>
+<meta name="description" content="เกมวางแผนการรบแบบเรียลไทม์ (RTS) แนว Red Alert เล่นฟรีบนเบราว์เซอร์ทันที ไม่ต้องดาวน์โหลด ไม่ต้องสมัคร สร้างฐาน ผลิตรถถัง ยึดซากโบราณ ชิงพิมพ์เขียวอาวุธ สู้กับ AI 3 ระดับ เล่นได้ทั้งคอมและมือถือ">
+<meta name="keywords" content="เกม RTS, เกมวางแผน, เกมวางแผนการรบ, เกมสงคราม, เกมเล่นบนเว็บ, เกมออนไลน์ฟรี, เกมแนว Red Alert, เกมสร้างฐาน, เกมรถถัง, browser RTS, real-time strategy">
+<link rel="canonical" href="https://www.ern-ai.com/">
+<link rel="alternate" hreflang="th" href="https://www.ern-ai.com/">
+<link rel="alternate" hreflang="en" href="https://www.ern-ai.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://www.ern-ai.com/en/">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#0b0d10">
-<link rel="icon" href="data:,">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ashes of the Archons">
+<meta property="og:locale" content="th_TH">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://www.ern-ai.com/">
+<meta property="og:title" content="Ashes of the Archons · เกม RTS เล่นฟรีบนเว็บ">
+<meta property="og:description" content="สร้างฐาน ผลิตรถถัง ยึดซากโบราณ ชิงพิมพ์เขียวอาวุธ แล้วบุกทำลายศัตรู เล่นบนเบราว์เซอร์ได้ทันที ไม่ต้องดาวน์โหลด">
+<meta property="og:image" content="https://www.ern-ai.com/img/screen-toon.png">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="726">
+<meta property="og:image:alt" content="ภาพสนามรบในเกม Ashes of the Archons">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ashes of the Archons · เกม RTS เล่นฟรีบนเว็บ">
+<meta name="twitter:description" content="เกมวางแผนการรบแบบเรียลไทม์ เล่นฟรีบนเบราว์เซอร์ ไม่ต้องดาวน์โหลด">
+<meta name="twitter:image" content="https://www.ern-ai.com/img/screen-toon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
-<!-- หน้าโหลด: CSS หลักมากับ JS (ช้า โดยเฉพาะ dev/มือถือ) จึงซ่อนทุกอย่างไว้ก่อนจน main.ts ใส่ class ready ที่ <html> -->
-<style>
-html,body{margin:0;height:100%;background:#0b0d10}
-html:not(.ready) body>:not(#boot){visibility:hidden}
-#boot{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0b0d10;color:#f2a93b;font:700 20px "Chakra Petch",system-ui,sans-serif;letter-spacing:4px;text-align:center;padding:16px;transition:opacity .3s,visibility .3s}
-html.ready #boot{opacity:0;visibility:hidden;pointer-events:none}
-#boot .bb{width:160px;height:4px;background:#1e252d;overflow:hidden}
-#boot .bb i{display:block;width:40%;height:100%;background:#f2a93b;animation:bootbar 1s ease-in-out infinite alternate}
-@keyframes bootbar{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
-</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.ern-ai.com/#website",
+      "url": "https://www.ern-ai.com/",
+      "name": "Ashes of the Archons",
+      "inLanguage": ["th", "en"]
+    },
+    {
+      "@type": "VideoGame",
+      "@id": "https://www.ern-ai.com/#game",
+      "name": "Ashes of the Archons",
+      "url": "https://www.ern-ai.com/",
+      "description": "เกมวางแผนการรบแบบเรียลไทม์ (RTS) เล่นฟรีบนเบราว์เซอร์ สร้างฐาน ยึดซากโบราณ ชิงพิมพ์เขียวอาวุธ และสู้กับ AI 3 ระดับ",
+      "image": "https://www.ern-ai.com/img/screen-toon.png",
+      "screenshot": ["https://www.ern-ai.com/img/screen-overview.png", "https://www.ern-ai.com/img/screen-ruin.png", "https://www.ern-ai.com/img/screen-touch.png"],
+      "genre": ["Real-time strategy", "Strategy", "เกมวางแผน"],
+      "gamePlatform": ["Web browser", "PC", "Mobile"],
+      "applicationCategory": "Game",
+      "operatingSystem": "Any (web browser)",
+      "playMode": "SinglePlayer",
+      "inLanguage": ["th", "en"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "THB", "availability": "https://schema.org/InStock", "url": "https://www.ern-ai.com/play/" },
+      "author": { "@type": "Person", "name": "SAHARAT SUEACHOM" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Ashes of the Archons เล่นฟรีไหม?", "acceptedAnswer": { "@type": "Answer", "text": "เล่นฟรีทั้งหมด ไม่มีโฆษณา ไม่มีของขายในเกม ถ้าชอบสามารถสนับสนุนผู้พัฒนาผ่าน PromptPay ได้ตามใจ" } },
+        { "@type": "Question", "name": "ต้องดาวน์โหลดหรือสมัครสมาชิกไหม?", "acceptedAnswer": { "@type": "Answer", "text": "ไม่ต้อง เปิดเว็บแล้วกดเล่นได้ทันที เข้าเล่นแบบ Guest ชื่อผู้เล่นเก็บไว้ในเบราว์เซอร์เครื่องนั้นเท่านั้น" } },
+        { "@type": "Question", "name": "เล่นบนมือถือได้ไหม?", "acceptedAnswer": { "@type": "Answer", "text": "ได้ ทั้งมือถือและแท็บเล็ต ให้หมุนจอเป็นแนวนอน เกมมีปุ่มสำหรับจอสัมผัสให้ แตะเพื่อเลือกและสั่งยูนิต ใช้สองนิ้วเลื่อนและซูมแผนที่" } },
+        { "@type": "Question", "name": "เป็นเกมแนวไหน เหมือน Red Alert ไหม?", "acceptedAnswer": { "@type": "Answer", "text": "เป็นเกมวางแผนการรบแบบเรียลไทม์ (RTS) ได้แรงบันดาลใจจาก Red Alert 2 เก็บแร่หาเงิน สร้างฐาน ผลิตทหารและรถถัง แล้วบุกทำลายศูนย์บัญชาการของศัตรู พร้อมระบบซากโบราณและพิมพ์เขียวอาวุธที่เป็นเอกลักษณ์" } },
+        { "@type": "Question", "name": "หนึ่งแมตช์ใช้เวลานานเท่าไร?", "acceptedAnswer": { "@type": "Answer", "text": "ประมาณ 15–25 นาที ขึ้นอยู่กับระดับ AI ที่เลือกและสไตล์การเล่น" } }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
-<div id="boot">ASHES OF THE ARCHONS<div class="bb"><i></i></div></div>
-<!-- ข้อความหลายภาษา: เนื้อหาใน HTML เป็นภาษาไทย ส่วน data-en คือภาษาอังกฤษ
-     (data-en-ph = placeholder, data-en-title = title) สลับด้วยปุ่ม .langBtn -->
-<div id="wrap">
-  <div id="game"><div id="msgs"></div><div id="esw"></div>
-    <!-- มินิแมพ: ลอยมุมล่างซ้ายของจอเกม -->
-    <canvas id="mini" width="228" height="171"></canvas>
-    <!-- ปุ่มสำหรับจอสัมผัส (แสดงเมื่อ body มี class touch) -->
-    <div id="touchbar">
-      <button data-act="all" data-en="<b>⊕</b>All"><b>⊕</b>ทั้งหมด</button><button data-act="box" data-en="<b>⬚</b>Box"><b>⬚</b>กรอบ</button><button data-act="amove" data-en="<b>⚔</b>Attack"><b>⚔</b>บุก</button><button data-act="stop" data-en="<b>■</b>Stop"><b>■</b>หยุด</button><button data-act="clear" data-en="<b>✕</b>Cancel"><b>✕</b>ยกเลิก</button>
-    </div>
-    <div id="touchtop"><div id="tcredbox"><span id="tcred">$0</span><i id="tqn"></i><div class="tq"><i id="tqbar"></i></div></div><button data-act="full" title="เต็มจอ" data-en-title="Fullscreen">⛶</button><button data-act="menu" id="menuBtn" data-en="☰ Command">☰ คำสั่ง</button></div>
+<header>
+  <div class="wrap">
+    <a class="logo" href="./">ASHES OF THE ARCHONS</a>
+    <nav>
+      <a class="l hide-sm" href="#features">จุดเด่น</a>
+      <a class="l hide-sm" href="#how">วิธีเล่น</a>
+      <a class="l hide-sm" href="#faq">คำถาม</a>
+      <a class="l hide-sm" href="#support">สนับสนุน</a>
+      <a class="l" href="en/" hreflang="en" lang="en">EN</a>
+      <a class="btn sm" href="play/" data-play="header">เล่นเลย</a>
+    </nav>
   </div>
-  <div id="side">
-    <div class="titlebar"><h1>ASHES OF THE ARCHONS</h1><div class="tbtns"><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button><button id="quitBtn" title="ออกจากเกม" data-en-title="Leave game" data-en="Exit">ออก</button><button data-act="menu" class="touchonly closeBtn" title="ปิดแผงคำสั่ง" data-en-title="Close panel">✕</button></div></div>
-    <div id="lvl"></div>
-    <div class="cred">$ <span id="cred">0</span></div>
-    <div><div class="sec"><span data-en="Producing:">กำลังผลิต:</span> <span id="qname">-</span></div><div class="bar"><i id="qbar"></i></div></div>
-    <div id="bp"><div style="color:#3ff0d8;font-weight:700" id="bptitle"></div><div id="bpopts"></div></div>
-    <div class="sec" data-en="Train units (keys 1-7)">ผลิตยูนิต (ปุ่ม 1-7)</div>
-    <div class="btns" id="btns"></div>
-    <div class="sec" data-en="Buildings (click, then place near base)">สิ่งก่อสร้าง (คลิกแล้ววางใกล้ฐาน)</div>
-    <div class="btns" id="bbtns"></div>
-    <div><div class="sec"><span data-en="Weapon research (needs Lab):">วิจัยอัปเกรดอาวุธ (ต้องมีห้องแล็บ):</span> <span id="rname">-</span></div><div class="bar"><i id="rbar"></i></div></div>
-    <div class="btns" id="rbtns"></div>
-    <div id="sw" style="display:none"><div class="sec" data-en="Orbital Strike">ลำแสงวงโคจร</div><div class="bar"><i id="swbar"></i></div><button id="swbtn" style="width:100%;margin-top:4px;text-align:center" disabled data-en="Fire Orbital Strike">ยิงลำแสงจากวงโคจร</button></div>
-    <div><div class="sec" data-en="Blueprints owned">พิมพ์เขียวที่มี</div><div id="owned">-</div></div>
-    <div id="help" data-en="
-      <b>Left drag</b> select units · <b>Right click</b> move/attack/cancel<br>
-      <b>A</b> + left click = attack-move · <b>S</b> stop · <b>Q</b> select all troops<br>
-      <b>Arrows</b>/screen edge/minimap = move camera<br><br>
-      <b style='color:#ffd166'>Build your base first</b> Barracks (infantry) → War Factory (vehicles) → Lab<br>
-      Weapon blueprints must be <b>researched at the Lab</b><br><br>
-      <b style='color:#3ff0d8'>Ancient ruins can each be decrypted once</b><br>
-      <span style='color:#3ff0d8'>◆ T1 Outpost Ruins</span> open from the start<br>
-      <span style='color:#ffcf5a'>◆ T2 Monolith</span> awakens at minute 4<br>
-      <span style='color:#ff5ad2'>◆ T3 Citadel</span> awakens at minute 8, gives the superweapon<br>
-      1. Clear the guardians, then send a <b>Decryption Rig</b> into the ring<br>
-      2. Decrypting gives a <b>Data Core</b>. Carry it back to your Archive Vault. If the Rig dies, anyone can pick it up<br>
-      3. Decrypted ruins become control points. Stand alone in the ring for 10s to capture them for steady income<br>
-      4. If an Archive Vault is destroyed, 2 blueprints drop<br>
-      Destroy the enemy Construction Yard to win">
-      <b>ลากซ้าย</b> เลือกยูนิต · <b>คลิกขวา</b> เดิน/โจมตี/ยกเลิก<br>
-      <b>A</b> + คลิกซ้าย = เดินพร้อมยิง · <b>S</b> หยุด · <b>Q</b> เลือกทหารทั้งหมด<br>
-      <b>ลูกศร</b>/ขอบจอ/มินิแมพ = เลื่อนกล้อง<br><br>
-      <b style="color:#ffd166">สร้างฐานก่อน</b> ค่ายทหาร (ฝึกทหาร) → โรงงานยานเกราะ (ผลิตรถ) → ห้องแล็บ<br>
-      อัปเกรดอาวุธจากพิมพ์เขียวต้อง<b>วิจัยที่ห้องแล็บ</b><br><br>
-      <b style="color:#3ff0d8">ซากโบราณ ถอดรหัสได้แห่งละครั้งเดียว</b><br>
-      <span style="color:#3ff0d8">◆ T1 ซากรอบนอก</span> เปิดตั้งแต่เริ่ม<br>
-      <span style="color:#ffcf5a">◆ T2 โมโนลิธ</span> ตื่นนาทีที่ 4<br>
-      <span style="color:#ff5ad2">◆ T3 วิหารกลาง</span> ตื่นนาทีที่ 8 ได้ซูเปอร์เวพอน<br>
-      1. กำจัดผู้พิทักษ์ แล้วส่ง<b>รถถอดรหัส</b>เข้าวง<br>
-      2. ถอดรหัสเสร็จได้<b>แกนข้อมูล</b> ต้องขนกลับคลังพิมพ์เขียว ถ้ารถถูกทำลาย แกนข้อมูลจะหล่นให้ใครก็เก็บได้<br>
-      3. ซากที่ถอดรหัสแล้วเป็นจุดยึด ยืนในวงฝ่ายเดียว 10 วินาทีเพื่อยึด ได้เงินต่อเนื่อง<br>
-      4. คลังพิมพ์เขียวถูกทำลาย พิมพ์เขียวหล่น 2 แผ่น<br>
-      ทำลายศูนย์บัญชาการของศัตรูเพื่อชนะ
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">เกม RTS · เล่นฟรีบนเว็บ</span>
+        <h1><span class="t">Ashes of the Archons</span><span class="s">เกมวางแผนการรบแบบเรียลไทม์ เล่นบนเบราว์เซอร์ได้ทันที</span></h1>
+        <p>สร้างฐาน เก็บแร่ ผลิตทหารและรถถัง ส่งทัพไปยึดซากอารยธรรมโบราณ ถอดรหัสเอาพิมพ์เขียวอาวุธ แล้วใช้มันบดขยี้ศูนย์บัญชาการของศัตรู</p>
+        <div class="cta">
+          <a class="btn" href="play/" data-play="hero">▶ เล่นฟรีทันที</a>
+          <a class="btn ghost" href="#how">ดูวิธีเล่น</a>
+        </div>
+        <div class="fine"><b>ไม่ต้องดาวน์โหลด</b> · <b>ไม่ต้องสมัคร</b> · เล่นได้ทั้งคอมและมือถือ</div>
+      </div>
+      <div class="shot">
+        <img src="/img/screen-toon.png" width="1000" height="726" alt="สนามรบในเกม Ashes of the Archons ฐานทัพ รถถัง และซากโบราณ ภาพ 3D สไตล์การ์ตูน" fetchpriority="high">
+      </div>
+    </div>
+  </section>
+
+  <div class="stats" id="stats" hidden aria-label="สถิติผู้เล่น">
+    <div class="wrap">
+      <div class="stat"><b data-k="pageViews">–</b><span>ยอดเข้าชมเว็บ</span></div>
+      <div class="stat"><b data-k="playClicks">–</b><span>ครั้งที่กดเล่น</span></div>
+      <div class="stat"><b data-k="players">–</b><span>ผู้บัญชาการที่ลงสนาม</span></div>
+      <div class="upd"></div>
     </div>
   </div>
-</div>
-<div id="start"><div class="card">
-  <div class="titlebar"><div class="logo">ASHES OF THE ARCHONS</div><button class="langBtn" title="เปลี่ยนภาษา / Change language">EN</button></div>
-  <!-- ขั้นที่ 1: เข้าเล่นแบบ Guest (ไม่มีบัญชี ชื่อเก็บในเบราว์เซอร์นี้เท่านั้น) -->
-  <div id="login">
-    <div class="sub" data-en="Play as Guest">เข้าเล่นแบบ Guest</div>
-    <input id="gname" maxlength="16" placeholder="ชื่อผู้บัญชาการ (เว้นว่างได้)" data-en-ph="Commander name (optional)" autocomplete="off" spellcheck="false">
-    <button id="guestBtn" data-en="Play as Guest">เข้าเล่นแบบ Guest</button>
-    <div class="note" data-en="No sign-up needed. Your name is saved in this browser only.">ไม่ต้องสมัครสมาชิก ชื่อเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น</div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>ทำไมต้อง <span class="k">Ashes of the Archons</span></h2>
+      <p class="lead">เกม RTS แนวคลาสสิกที่คิดถึงยุค Red Alert 2 แต่เปิดเล่นได้ในไม่กี่วินาทีบนเบราว์เซอร์ พร้อมกลไกใหม่ที่ทำให้ทุกแมตช์ต้องวางแผน</p>
+      <div class="grid">
+        <article class="card"><h3>เล่นบนเว็บ ไม่ต้องติดตั้ง</h3><p>เปิดลิงก์แล้วเล่นได้เลย ไม่มีไฟล์ให้โหลด ไม่ต้องสมัครสมาชิก เข้าเล่นแบบ Guest ได้ทันที</p></article>
+        <article class="card" style="--c:var(--cyan)"><h3>ยึดซากโบราณ ชิงพิมพ์เขียว</h3><p>ซากอารยธรรม Archon 3 ระดับตื่นขึ้นตามเวลา ถอดรหัสเพื่อปลดล็อกอาวุธใหม่ และแย่งชิงแกนข้อมูลกลางสนามรบ</p></article>
+        <article class="card" style="--c:var(--magenta)"><h3>ซูเปอร์เวพอนลำแสงวงโคจร</h3><p>ยึดวิหารกลางให้ได้เพื่อปลดล็อกลำแสงจากอวกาศ พลิกเกมได้ในนัดเดียว แต่ศัตรูก็อยากได้เหมือนกัน</p></article>
+        <article class="card"><h3>สู้กับ AI 3 ระดับ</h3><p>ตั้งแต่มือใหม่ถึงสายโหด AI ใช้ยูนิตพลังเท่ากับเรา ไม่โกง ต่างกันที่ความเร็วคิด ขนาดทัพ และแท็กติก</p></article>
+        <article class="card" style="--c:var(--cyan)"><h3>คอมหรือมือถือก็เล่นได้</h3><p>เมาส์ + คีย์ลัดแบบ RTS เต็มรูปแบบ หรือแตะ ลาก บีบซูมบนจอสัมผัส ออกแบบให้เล่นบนมือถือแนวนอนได้จริง</p></article>
+        <article class="card"><h3>ภาพ 3D low-poly</h3><p>มุมกล้องเฉียงแบบเกม RTS คลาสสิก เลือกสไตล์การ์ตูนได้ เบาพอจะลื่นบนเครื่องทั่วไป</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="background:var(--bg2)">
+    <div class="wrap">
+      <h2>วิธีเล่น <span class="k">ใน 3 ขั้น</span></h2>
+      <p class="lead">หนึ่งแมตช์ยาวประมาณ 15–25 นาที เป้าหมายคือทำลายศูนย์บัญชาการของศัตรูให้ได้ก่อน</p>
+      <ol class="steps">
+        <li><h3>สร้างฐาน หาเงิน</h3><p>สร้างโรงกลั่น ส่งรถขุดแร่ไปเก็บแร่ แล้วตั้งค่ายทหาร โรงงานยานเกราะ และห้องแล็บ</p></li>
+        <li><h3>ยึดซากโบราณ</h3><p>กำจัดผู้พิทักษ์ ส่งรถถอดรหัสเข้าวง แล้วขนแกนข้อมูลกลับคลัง เพื่อวิจัยอาวุธใหม่</p></li>
+        <li><h3>บุกทำลายศัตรู</h3><p>รวมทัพรถถังและทหารที่อัปเกรดแล้ว เดินพร้อมยิงเข้าฐานศัตรู ทำลายศูนย์บัญชาการเพื่อชนะ</p></li>
+      </ol>
+      <div class="tiers">
+        <span style="color:var(--cyan)">◆ T1 ซากรอบนอก · เปิดตั้งแต่เริ่ม</span>
+        <span style="color:#ffcf5a">◆ T2 โมโนลิธ · ตื่นนาทีที่ 4</span>
+        <span style="color:var(--magenta)">◆ T3 วิหารกลาง · ตื่นนาทีที่ 8</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <h2>ภาพจาก<span class="k">ในเกม</span></h2>
+      <p class="lead">ภาพจริงจากเกม ทุกโมเดลสร้างด้วยโค้ด</p>
+      <div class="gallery">
+        <figure><img src="/img/screen-overview.png" width="1240" height="900" loading="lazy" alt="ภาพรวมสนามรบ ฐานทัพ รถขุดแร่ และมินิแมพ"><figcaption>สนามรบ: ฐานทัพ แหล่งแร่ และมินิแมพ</figcaption></figure>
+        <figure><img src="/img/screen-ruin.png" width="800" height="510" loading="lazy" alt="ซากโบราณพร้อมผู้พิทักษ์"><figcaption>ซากโบราณ T1 กับเหล่าผู้พิทักษ์</figcaption></figure>
+        <figure><img src="/img/screen-attack-move.png" width="700" height="470" loading="lazy" alt="สั่งทัพเดินพร้อมยิง"><figcaption>สั่งทัพเดินพร้อมยิงเข้าหาศัตรู</figcaption></figure>
+        <figure><img src="/img/screen-citadel.png" width="750" height="460" loading="lazy" alt="วิหารกลางที่ยังปิดผนึก"><figcaption>วิหารกลาง T3 ที่ซ่อนซูเปอร์เวพอน</figcaption></figure>
+        <figure><img src="/img/screen-touch.png" width="900" height="420" loading="lazy" alt="หน้าจอเกมบนมือถือแนวนอน"><figcaption>เล่นบนมือถือด้วยปุ่มจอสัมผัส</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="ai" class="ai" style="background:var(--bg2)">
+    <div class="wrap">
+      <h2>เลือก<span class="k">ระดับความยาก</span></h2>
+      <p class="lead">ทุกระดับใช้ยูนิตพลังเท่ากับผู้เล่น ไม่มีการโกง</p>
+      <div class="grid">
+        <article class="card" style="--c:#7dff9a"><h3>ง่าย</h3><p>ไม่บุกฐาน 7 นาทีแรก คิดช้า ไม่ดักรถถอดรหัส ไม่วิจัย เหมาะกับมือใหม่หัดเล่น RTS</p></article>
+        <article class="card" style="--c:#f2a93b"><h3>ปกติ</h3><p>ไม่บุกฐาน 4 นาทีแรก แย่งซาก ขัดการถอดรหัส ดักรถถอดรหัสใกล้ๆ และวิจัยอัปเกรด</p></article>
+        <article class="card" style="--c:#ff4a2e"><h3>ยาก</h3><p>บุกตั้งแต่นาทีที่ 2 คิดเร็ว มีเงินโบนัสสูง ดักรถถอดรหัสทั่วแผนที่ สำหรับคนที่อยากโดนท้าทาย</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq">
+      <h2>คำถาม<span class="k">ที่พบบ่อย</span></h2>
+      <details open><summary>Ashes of the Archons เล่นฟรีไหม?</summary><p>เล่นฟรีทั้งหมด ไม่มีโฆษณา ไม่มีของขายในเกม ถ้าชอบสามารถสนับสนุนผู้พัฒนาผ่าน PromptPay ได้ตามใจ</p></details>
+      <details><summary>ต้องดาวน์โหลดหรือสมัครสมาชิกไหม?</summary><p>ไม่ต้อง เปิดเว็บแล้วกดเล่นได้ทันที เข้าเล่นแบบ Guest ชื่อผู้เล่นเก็บไว้ในเบราว์เซอร์เครื่องนั้นเท่านั้น</p></details>
+      <details><summary>เล่นบนมือถือได้ไหม?</summary><p>ได้ ทั้งมือถือและแท็บเล็ต ให้หมุนจอเป็นแนวนอน เกมมีปุ่มสำหรับจอสัมผัสให้ แตะเพื่อเลือกและสั่งยูนิต ใช้สองนิ้วเลื่อนและซูมแผนที่</p></details>
+      <details><summary>เป็นเกมแนวไหน เหมือน Red Alert ไหม?</summary><p>เป็นเกมวางแผนการรบแบบเรียลไทม์ (RTS) ได้แรงบันดาลใจจาก Red Alert 2 เก็บแร่หาเงิน สร้างฐาน ผลิตทหารและรถถัง แล้วบุกทำลายศูนย์บัญชาการของศัตรู พร้อมระบบซากโบราณและพิมพ์เขียวอาวุธที่เป็นเอกลักษณ์</p></details>
+      <details><summary>หนึ่งแมตช์ใช้เวลานานเท่าไร?</summary><p>ประมาณ 15–25 นาที ขึ้นอยู่กับระดับ AI ที่เลือกและสไตล์การเล่น</p></details>
+    </div>
+  </section>
+
+  <section id="support" class="support">
+    <div class="wrap">
+      <div class="thanks" hidden>ขอบคุณที่เข้ามาเล่นนะผู้บัญชาการ!</div>
+      <div class="sup">
+        <div>
+          <h2>สนับสนุน<span class="k">ผู้พัฒนา</span></h2>
+          <p class="lead">Ashes of the Archons เล่นฟรี ไม่มีโฆษณา และไม่มีของขายในเกม ถ้าชอบเกมนี้ ร่วมสนับสนุนให้มีด่าน ยูนิต และโหมดใหม่ๆ ได้ผ่านลิงก์โดเนท หรือสแกน QR PromptPay</p>
+          <ul class="perks">
+            <li>สแกนด้วยแอปธนาคารใดก็ได้</li>
+            <li>จำนวนเท่าไรก็ได้ ไม่มีขั้นต่ำ</li>
+            <li>ทุกบาทนำไปพัฒนาเกมต่อ</li>
+          </ul>
+          <div class="cta">
+            <a class="btn" href="https://ezdn.app/ellou" target="_blank" rel="noopener" data-donate="ezdn">โดเนทผ่าน ezdn.app ↗</a>
+            <a class="btn ghost" href="play/" data-play="support">▶ กลับไปเล่นอีกรอบ</a>
+          </div>
+        </div>
+        <figure class="pp"><div class="pphead">PromptPay</div><img src="/src/assets/promptpay-qr.png" width="220" height="220" loading="lazy" alt="QR PromptPay สำหรับสนับสนุนผู้พัฒนา"><figcaption>สแกนเพื่อสนับสนุน</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <h2>พร้อมบัญชาการรบหรือยัง?</h2>
+      <p class="lead">ศัตรูกำลังมุ่งหน้าไปที่ซากโบราณ เข้าเกมได้ในไม่กี่วินาที</p>
+      <a class="btn" href="play/" data-play="final">▶ เริ่มเล่นเลย</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 SAHARAT SUEACHOM · Ashes of the Archons</span>
+    <span><a href="en/" hreflang="en" lang="en">English</a> · <a href="https://github.com/sasue1994/Ashes-of-the-Archons" rel="noopener">GitHub</a></span>
   </div>
-  <!-- ขั้นที่ 2: เลือกระดับ AI -->
-  <div id="lvlstep" class="hide">
-    <div class="sub"><span data-en="Hello">สวัสดี</span> <b id="hello"></b> · <span data-en="Choose AI difficulty">เลือกระดับความยากของ AI</span></div>
-    <div id="lvls"></div>
-    <button id="rename" class="link" data-en="Change name">เปลี่ยนชื่อ</button>
-  </div>
-</div></div>
-<div id="rotate" data-en="Rotate your phone to landscape to play">หมุนจอเป็นแนวนอนเพื่อเล่น</div>
-<div id="over"><div id="overtxt"></div><div class="overbtns"><button id="again" data-en="Play again">เล่นใหม่</button><button id="overQuit" data-en="Leave game">ออกจากเกม</button></div></div>
-<!-- ยืนยันออกจากเกม (เกมหยุดชั่วคราวระหว่างถาม) -->
-<div id="quit" class="modal hide"><div class="card">
-  <div class="mtitle" data-en="Leave the game?">ออกจากเกมหรือไม่?</div>
-  <div class="note" data-en="Progress in this match will be lost.">ความคืบหน้าของแมตช์นี้จะหายไป</div>
-  <div class="mbtns"><button id="quitYes" class="primary" data-en="Leave">ออกจากเกม</button><button id="quitNo" data-en="Keep playing">เล่นต่อ</button></div>
-</div></div>
-<!-- หน้าขอบคุณหลังออกจากเกม + สนับสนุนผ่าน PromptPay -->
-<div id="bye" class="modal hide"><div class="card">
-  <div class="logo">ASHES OF THE ARCHONS</div>
-  <div class="thanks" data-en="Thank you for playing!">ขอบคุณที่เข้ามาเล่น!</div>
-  <div class="note" data-en="Hope you enjoyed the battle, Commander. If you like the game, you can support its development via PromptPay.">หวังว่าจะสนุกกับการรบครั้งนี้นะผู้บัญชาการ ถ้าชอบเกมนี้ ร่วมสนับสนุนผู้พัฒนาได้ผ่าน PromptPay</div>
-  <div class="pp"><div class="pphead">PromptPay</div><img id="ppqr" alt="QR PromptPay" width="220" height="220"></div>
-  <div class="note center" data-en="Scan with any Thai banking app · any amount">สแกนด้วยแอปธนาคารใดก็ได้ · จำนวนเท่าไรก็ได้</div>
-  <button id="byeAgain" class="primary" data-en="Play again">เล่นอีกครั้ง</button>
-</div></div>
-<script type="module" src="/src/main.ts"></script>
+</footer>
+<script type="module" src="/src/landing/main.ts"></script>
 </body>
 </html>
