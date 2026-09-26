@@ -8,6 +8,7 @@ import { i18n, tr, type Lang } from '../sim/i18n';
 import { RESEARCHED, canBuild, canPlace, canResearch, lockReason, queueUnit, researchReason, startResearch } from '../sim/production';
 import { awake, grantBP, holdIncome, wakeText } from '../sim/ruins';
 import { S, hooks, msg } from '../sim/state';
+import { sfx } from '../audio/sound';
 import { ctl, startPlace, startStrike } from './input';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -24,7 +25,7 @@ function showBP() {
   for (const k of of.keys) {
     const b = document.createElement('button');
     b.innerHTML = tag(k) + '<b>' + BP[k].name + '</b><small style="color:#cfd8e3">' + BP[k].desc + '</small>';
-    b.onclick = () => { grantBP(0, k); tm.offers.shift(); showBP(); msg(tr('ติดตั้ง' + BP[k].name + 'แล้ว', BP[k].name + ' installed'), '#3ff0d8') };
+    b.onclick = () => { grantBP(0, k); tm.offers.shift(); showBP(); sfx('chime'); msg(tr('ติดตั้ง' + BP[k].name + 'แล้ว', BP[k].name + ' installed'), '#3ff0d8') };
     o.appendChild(b);
   }
 }
@@ -90,18 +91,18 @@ function buildButtons() {
   $('btns').innerHTML = ''; $('bbtns').innerHTML = ''; $('rbtns').innerHTML = '';
   BUILD.forEach((k, i) => {
     const b = makeBtn(k, i); $('btns').appendChild(b); btnEls[k] = b;
-    b.onclick = () => { if (queueUnit(0, k)) flash(b); else msg(tr('ผลิต' + T[k].name + 'ไม่ได้: ', "Can't train " + T[k].name + ': ') + whyNot(k, true), '#ff8a7a') };
+    b.onclick = () => { if (queueUnit(0, k)) { flash(b); sfx('click') } else sfx('error'), msg(tr('ผลิต' + T[k].name + 'ไม่ได้: ', "Can't train " + T[k].name + ': ') + whyNot(k, true), '#ff8a7a') };
   });
   PLACE.forEach(k => {
     const b = makeBtn(k); $('bbtns').appendChild(b); bbtnEls[k] = b;
     b.onclick = () => {
       if (canPlace(0, k)) { startPlace(k); msg(tr('แตะหรือคลิกบนแผนที่ใกล้ฐานเพื่อวาง', 'Tap or click near your base to place ') + T[k].name, '#8fd0ff') }
-      else msg(tr('สร้าง' + T[k].name + 'ไม่ได้: ', "Can't build " + T[k].name + ': ') + whyNot(k, false), '#ff8a7a');
+      else sfx('error'), msg(tr('สร้าง' + T[k].name + 'ไม่ได้: ', "Can't build " + T[k].name + ': ') + whyNot(k, false), '#ff8a7a');
     };
   });
   UPG_KEYS.forEach(k => {
     const b = document.createElement('button'); $('rbtns').appendChild(b); rbtnEls[k] = b;
-    b.onclick = () => { if (!startResearch(0, k)) msg(tr('วิจัย' + BP[k].name + 'ไม่ได้: ', "Can't research " + BP[k].name + ': ') + (researchReason(0, k) || tr('เงินไม่พอ ต้องใช้ $', 'Not enough money, costs $') + UPG[k].cost), '#ff8a7a') };
+    b.onclick = () => { if (!startResearch(0, k)) sfx('error'), msg(tr('วิจัย' + BP[k].name + 'ไม่ได้: ', "Can't research " + BP[k].name + ': ') + (researchReason(0, k) || tr('เงินไม่พอ ต้องใช้ $', 'Not enough money, costs $') + UPG[k].cost), '#ff8a7a') };
   });
 }
 
@@ -161,6 +162,7 @@ export function initHud() {
   $('again').onclick = () => location.reload();
   hooks.offer = showBP; hooks.bpChanged = uiOwned;
   hooks.gameOver = r => {
+    sfx(r === 'VICTORY' ? 'win' : 'lose');
     const o = $('over'), d = $('overtxt'); o.style.display = 'flex';
     d.textContent = r === 'VICTORY' ? tr('ชนะ!', 'VICTORY') : tr('พ่ายแพ้', 'DEFEAT'); d.style.color = r === 'VICTORY' ? '#3fd9c1' : '#ff6b7a';
   };

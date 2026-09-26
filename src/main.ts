@@ -9,6 +9,7 @@ import { initWorld } from './sim/world';
 import { drawMini, hudUpdate, initHud } from './ui/hud';
 import { initExit, ui } from './ui/exit';
 import { initInput, scrollCam } from './ui/input';
+import { initSound, soundFrame } from './audio/sound';
 import './style.css';
 
 initAnalytics();
@@ -17,6 +18,7 @@ initScene(document.getElementById('game')!);
 initInput(canvas());
 initHud();
 initExit();
+initSound();
 
 centerOn(500, 1900); computeFog();
 // โหมดทดสอบ (เฉพาะ dev): เปิด /#reveal หรือ /#reveal@1600,1200 เพื่อดูทั้งแผนที่
@@ -34,6 +36,7 @@ function frame(t: number) {
   if (!S.over && S.started && !ui.paused) update(dt); // รอผู้เล่นเลือกระดับ AI ก่อน / หยุดชั่วคราวตอนถามว่าจะออกไหม
   if (reveal) { vis.fill(1); exp.fill(1) }
   renderScene(now);
+  soundFrame(dt, ui.paused);
   drawMini(now);
   uiT -= dt; if (uiT <= 0) { uiT = .15; hudUpdate() }
 }

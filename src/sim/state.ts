@@ -48,8 +48,14 @@ export const S = {
   level: 'normal' as AiLevel, started: false, // ระดับ AI และเริ่มแมตช์แล้วหรือยัง (หน้าเลือกระดับ)
 };
 
+// เสียงที่ sim แจ้ง (x,y = ตำแหน่งในโลก ไว้คำนวณความดัง/ซ้ายขวา; ไม่มี = เสียงแจ้งเตือนของผู้เล่น)
+export type SfxKey = 'rifle' | 'cannon' | 'beam' | 'artillery' | 'missile' | 'boom' | 'explode' | 'collapse' | 'die'
+  | 'ready' | 'built' | 'research' | 'target' | 'orbital';
 // จุดเชื่อมให้ UI รับรู้เหตุการณ์จาก sim โดยที่ sim ไม่ต้องรู้จัก UI
-export const hooks = { offer: () => {}, bpChanged: () => {}, researched: (_k: UpgKey) => {}, gameOver: (_r: 'VICTORY' | 'DEFEAT') => {} };
+export const hooks = {
+  offer: () => {}, bpChanged: () => {}, researched: (_k: UpgKey) => {}, gameOver: (_r: 'VICTORY' | 'DEFEAT') => {},
+  sfx: (_k: SfxKey, _x?: number, _y?: number) => {},
+};
 
 export const dist = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
 export const rand = <X>(a: X[]): X => a[Math.floor(Math.random() * a.length)];

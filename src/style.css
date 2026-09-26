@@ -135,6 +135,8 @@ button.off .cost{color:#ff7a5c}
 .tbtns{display:flex;gap:6px;flex:none}
 #quitBtn{padding:4px 10px;font-size:12px;font-weight:700;text-align:center;color:#ff8a7a;border-color:#6b2f28}
 #quitBtn:hover{border-color:var(--red)}
+.sndBtn,.musBtn{padding:4px 8px;font-size:12px;text-align:center;min-width:28px}
+.sndBtn.off,.musBtn.off{text-decoration:line-through}
 .overbtns{display:flex;gap:12px}
 #over #overQuit{background:var(--panel2);color:var(--txt);border:1px solid var(--line)}
 .modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(5,6,8,.82);backdrop-filter:blur(4px);padding:16px;box-sizing:border-box}

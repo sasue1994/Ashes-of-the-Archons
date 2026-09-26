@@ -24,13 +24,16 @@ export function update(dt: number) {
     if (e.hp <= 0) continue; e.cd -= dt;
     if (e.build > 0) {
       e.build -= dt; e.hp = Math.min(e.maxhp, e.hp + e.maxhp * .7 * dt / e.buildMax);
-      if (e.build <= 0 && e.team === 0) msg(e.t.name + tr(' สร้างเสร็จแล้ว', ' complete'), '#8fd0ff');
+      if (e.build <= 0 && e.team === 0) { msg(e.t.name + tr(' สร้างเสร็จแล้ว', ' complete'), '#8fd0ff'); hooks.sfx('built') }
       continue;
     }
     if (e.t.bld) { if (e.t.dmg) turretUpdate(e) } else unitUpdate(e, dt);
   }
   separate(); shotsUpdate(dt); ruinsUpdate(dt); cargoUpdate(); strikesUpdate(dt);
-  for (const e of S.ents) if (e.hp <= 0 && !e.dead) { e.dead = true; onDeath(e); S.fx.push({ k: 'boom', x: e.x, y: e.y, r: e.t.r * 2, ttl: .6, max: .6 }) }
+  for (const e of S.ents) if (e.hp <= 0 && !e.dead) {
+    e.dead = true; onDeath(e); S.fx.push({ k: 'boom', x: e.x, y: e.y, r: e.t.r * 2, ttl: .6, max: .6 });
+    hooks.sfx(e.t.bld ? 'collapse' : e.t.kind === 'inf' ? 'die' : 'explode', e.x, e.y);
+  }
   S.ents = S.ents.filter(e => !e.dead);
   for (const f of S.fx) f.ttl -= dt; S.fx = S.fx.filter(f => f.ttl > 0);
   for (const m of S.msgs) m.t -= dt; S.msgs = S.msgs.filter(m => m.t > 0);

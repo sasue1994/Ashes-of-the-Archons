@@ -1,5 +1,5 @@
 import { CARRY_SPEED } from './data';
-import { S, dist, upg, type Ent } from './state';
+import { S, dist, hooks, upg, type Ent } from './state';
 
 export const hostile = (a: Ent, b: Ent) => a.team !== b.team;
 
@@ -26,6 +26,7 @@ const vsMul = (src: Ent, tg: Ent) => tg.t.kind === 'inf' ? src.t.vsInf : tg.t.ki
 export function fire(e: Ent, tg: Ent) {
   const t = e.t; e.cd = t.rof; e.ang = Math.atan2(tg.y - e.y, tg.x - e.x);
   const dmg = t.dmg * (boosted(e) ? 1.3 : 1);
+  hooks.sfx(t.missile ? 'missile' : t.splash ? 'artillery' : t.beam ? 'beam' : t.kind === 'inf' ? 'rifle' : 'cannon', e.x, e.y);
   if (t.missile) {
     // ยิงจรวดจากแท่นซ้าย/ขวา ทำดาเมจตอนระเบิดถึงเป้า
     const nx = -Math.sin(e.ang), ny = Math.cos(e.ang);
@@ -60,7 +61,7 @@ export function shotsUpdate(dt: number) {
     if (Math.hypot(m.tx - m.x, m.ty - m.y) > 10 && m.life > 0) continue;
     m.done = true;
     for (const o of S.ents) if (o.hp > 0 && o.team !== m.team && dist(o, { x: m.tx, y: m.ty }) < m.splash + o.t.r) damage(o, m.dmg * vsMul(m.src, o), m.src);
-    S.fx.push({ k: 'boom', x: m.tx, y: m.ty, r: m.splash * .9, ttl: .45, max: .45 });
+    S.fx.push({ k: 'boom', x: m.tx, y: m.ty, r: m.splash * .9, ttl: .45, max: .45 }); hooks.sfx('boom', m.tx, m.ty);
   }
   S.shots = S.shots.filter(m => !m.done);
 }

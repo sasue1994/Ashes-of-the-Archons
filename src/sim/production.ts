@@ -30,7 +30,7 @@ export function production(team: number, dt: number) {
   const s = team === 0 ? 1 : -1;
   const u = spawn(q.type, team, src.x + (src.t.r + 16) * s, src.y - (src.t.r + 16) * s);
   u.mx = src.x + (src.t.r + 90 + Math.random() * 60) * s; u.my = src.y - (src.t.r + 80 + Math.random() * 60) * s;
-  if (team === 0) msg(T[q.type].name + tr(' พร้อมรบ', ' ready'), '#8fd0ff');
+  if (team === 0) { msg(T[q.type].name + tr(' พร้อมรบ', ' ready'), '#8fd0ff'); hooks.sfx('ready') }
 }
 
 // ---------- งานวิจัยอัปเกรดอาวุธที่ Lab ----------
@@ -62,7 +62,7 @@ export function research(team: number, dt: number) {
     const f = e.hp / e.maxhp; e.maxhp = e.t.hp * hpMul(team, e.t); e.hp = e.maxhp * f;
   }
   msg(team === 0 ? tr('วิจัย' + BP[r.key].name + 'เสร็จ! อาวุธอัปเกรดแล้ว', BP[r.key].name + ' researched! Weapons upgraded') : tr('⚠ ศัตรูวิจัย' + BP[r.key].name + 'เสร็จ', '⚠ Enemy researched ' + BP[r.key].name), team === 0 ? '#3ff0d8' : '#ff8a7a');
-  if (team === 0) hooks.researched(r.key);
+  if (team === 0) { hooks.researched(r.key); hooks.sfx('research') }
 }
 
 // ---------- สิ่งก่อสร้าง ----------

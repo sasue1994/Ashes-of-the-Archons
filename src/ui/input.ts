@@ -6,6 +6,7 @@ import { placeBuilding, queueUnit } from '../sim/production';
 import { strike } from '../sim/ruins';
 import { ui } from './exit';
 import { S, msg, type Ent, type Pt } from '../sim/state';
+import { sfx } from '../audio/sound';
 
 // สถานะการควบคุมของผู้เล่น (ไม่ใช่ส่วนของ sim)
 export type Mode = null | 'amove' | 'strike' | 'place' | 'box';
@@ -37,7 +38,7 @@ function order(p: Pt, amove: boolean) {
     e.mx = p.x + (i % cols - (cols - 1) / 2) * 30; e.my = p.y + (Math.floor(i / cols) - (cols - 1) / 2) * 30;
     e.amove = amove; e.target = null; e.forced = false; e.state = null;
   });
-  S.fx.push({ k: 'ping', x: p.x, y: p.y, ttl: .5, max: .5, col: amove ? '#ff6b6b' : '#7dff9a' });
+  S.fx.push({ k: 'ping', x: p.x, y: p.y, ttl: .5, max: .5, col: amove ? '#ff6b6b' : '#7dff9a' }); sfx(amove ? 'attack' : 'move');
 }
 
 // ---------- คำสั่งที่ใช้ร่วมกันระหว่างเมาส์ คีย์บอร์ด และจอสัมผัส ----------
@@ -57,8 +58,8 @@ function modeAction(p: Pt) {
   if (ctl.mode === 'strike') { strike(0, p.x, p.y); ctl.mode = null; return true }
   if (ctl.mode === 'amove') { order(p, true); ctl.mode = null; return true }
   if (ctl.mode === 'place') {
-    if (placeBuilding(0, ctl.placeType, p.x, p.y)) { ctl.mode = null; msg(tr('เริ่มก่อสร้าง ', 'Building ') + T[ctl.placeType].name, '#8fd0ff') }
-    else msg(tr('วางตรงนี้ไม่ได้ ต้องอยู่ใกล้ฐาน และไม่ทับสิ่งอื่น', "Can't build here. Must be near your base and not overlapping"), '#ff8a7a');
+    if (placeBuilding(0, ctl.placeType, p.x, p.y)) { ctl.mode = null; sfx('place'); msg(tr('เริ่มก่อสร้าง ', 'Building ') + T[ctl.placeType].name, '#8fd0ff') }
+    else sfx('error'), msg(tr('วางตรงนี้ไม่ได้ ต้องอยู่ใกล้ฐาน และไม่ทับสิ่งอื่น', "Can't build here. Must be near your base and not overlapping"), '#ff8a7a');
     return true;
   }
   return false;
@@ -66,7 +67,7 @@ function modeAction(p: Pt) {
 // คลิกขวา / แตะพื้นหรือศัตรูขณะเลือกยูนิตอยู่: โจมตีหรือเดิน
 function command(p: Pt, pad = 6) {
   const tg = entAt(p, e => e.team !== 0 && seen(e), pad);
-  if (tg) { for (const e of selected()) if (e.t.dmg) { e.target = tg; e.forced = true; e.mx = null; e.amove = false } }
+  if (tg) { for (const e of selected()) if (e.t.dmg) { e.target = tg; e.forced = true; e.mx = null; e.amove = false } sfx('attack') }
   else order(p, false);
 }
 // เลือกด้วยกรอบ (พิกัดจอ)
@@ -78,6 +79,7 @@ function boxSelect(sx: number, sy: number, ex: number, ey: number) {
     if (e.team !== 0 || e.t.bld) continue;
     const p = toScreen(e.x, e.y, 8); if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1) e.sel = true;
   }
+  if (selected().length) sfx('select');
 }
 const onScreen = (e: Ent) => { const p = toScreen(e.x, e.y); return p.x > 0 && p.y > 0 && p.x < cam.sw && p.y < cam.sh };
 
@@ -194,6 +196,7 @@ function initTouch(cv: HTMLCanvasElement) {
         // แตะซ้ำ = เลือกยูนิตชนิดเดียวกันที่อยู่บนจอทั้งหมด
         for (const e of S.ents) if (e.team === 0 && e.type === mine.type && onScreen(e)) e.sel = true;
       } else mine.sel = true;
+      sfx('select');
       lastTap = { t: now, id: mine.id };
       return;
     }
@@ -210,7 +213,7 @@ function initTouch(cv: HTMLCanvasElement) {
       document.documentElement.requestFullscreen?.().then(() => (screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> }).lock?.('landscape')).catch(() => {});
     },
   };
-  document.querySelectorAll<HTMLButtonElement>('[data-act]').forEach(b => b.addEventListener('click', () => act[b.dataset.act!]?.()));
+  document.querySelectorAll<HTMLButtonElement>('[data-act]').forEach(b => b.addEventListener('click', () => { sfx('click'); act[b.dataset.act!]?.() }));
 }
 // เปิดหน้าตาแบบจอสัมผัส (แผงข้างถูกย้ายออกจาก layout จอเกมปรับขนาดเองผ่าน ResizeObserver)
 function enableTouchUI() {

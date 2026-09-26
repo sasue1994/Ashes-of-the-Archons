@@ -180,13 +180,13 @@ export function revokeBP(team: number, k: BPKey) {
 export function strike(team: number, x: number, y: number) {
   const tm = S.teams[team]; if (!tm.sw || tm.sw.charge < tm.sw.need) return;
   tm.sw.charge = 0; tm.sw.warned = false;
-  S.strikes.push({ x, y, t: 1.4, team }); S.fx.push({ k: 'target', x, y, ttl: 1.4, max: 1.4 });
+  S.strikes.push({ x, y, t: 1.4, team }); S.fx.push({ k: 'target', x, y, ttl: 1.4, max: 1.4 }); hooks.sfx('target');
   msg(team === 0 ? tr('ยิงลำแสงวงโคจรแล้ว!', 'Orbital Strike fired!') : tr('⚠ ศัตรูยิงลำแสงวงโคจร!', '⚠ Enemy Orbital Strike incoming!'), team === 0 ? '#ff5ad2' : '#ff5a4d');
 }
 export function strikesUpdate(dt: number) {
   for (const s of S.strikes) {
     s.t -= dt; if (s.t > 0) continue;
-    s.done = true; S.fx.push({ k: 'orbital', x: s.x, y: s.y, ttl: 1.2, max: 1.2 });
+    s.done = true; S.fx.push({ k: 'orbital', x: s.x, y: s.y, ttl: 1.2, max: 1.2 }); hooks.sfx('orbital', s.x, s.y);
     for (const e of S.ents) if (e.hp > 0 && e.team !== s.team && dist(e, s) < 160 + e.t.r) e.hp -= 1800;
   }
   S.strikes = S.strikes.filter(s => !s.done);
