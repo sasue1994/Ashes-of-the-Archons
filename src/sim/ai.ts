@@ -45,12 +45,13 @@ export function aiUpdate(dt: number) {
   const hq0 = S.ents.find(e => e.team === 0 && e.type === 'hq');
   aiBuild(tm);
   if (P().research) for (const k of UPG_KEYS) if (canResearch(1, k) && (!ai.save || tm.credits >= T[ai.save].cost + 800)) startResearch(1, k);
-  if (tm.queue.length < 2) {
-    let pick: TypeKey;
-    if (mine.filter(e => e.type === 'harv').length < 2 && unlocked(1, 'harv')) pick = 'harv';
+  if (tm.queue.length < P().queue) {
+    let pick: TypeKey | null;
+    if (mine.filter(e => e.type === 'harv').length < P().harvs && unlocked(1, 'harv')) pick = 'harv';
     else if (!freeRigs.length && !tm.queue.some(q => q.type === 'rig')) pick = 'rig';
+    else if (army.length + tm.queue.length >= P().armyMax) pick = null; // ทัพเต็มเพดานของระดับนี้
     else { const o = P().units.filter(k => unlocked(1, k)); pick = o.length ? rand(o) : 'rifle' }
-    if (!ai.save || army.length < 4 || tm.credits >= T[ai.save].cost + T[pick].cost) queueUnit(1, pick);
+    if (pick && (!ai.save || army.length < 4 || tm.credits >= T[ai.save].cost + T[pick].cost)) queueUnit(1, pick);
   }
 
   // 1) ผู้เล่นกำลังถอดรหัส → ยกทัพไปขัด

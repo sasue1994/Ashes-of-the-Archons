@@ -122,22 +122,28 @@ export interface AiParams {
   pickup: boolean;     // ส่ง Rig ไปเก็บของที่หล่น
   research: boolean;   // วิจัยอัปเกรดที่ Lab
   turrets: number;     // จำนวนป้อมปืนที่สร้างเพิ่ม
+  harvs: number;       // จำนวนรถขุดแร่ที่รักษาไว้ (เศรษฐกิจ)
+  queue: number;       // จำนวนยูนิตในคิวผลิตพร้อมกัน
+  armyMax: number;     // ทัพสูงสุด (ยูนิตรบ) ครบแล้วหยุดผลิต · ต่ำกว่า 12 = ไม่มีวันไปตีวิหารกลาง (ไม่ได้ซูเปอร์เวพอน)
   units: TypeKey[];    // ยูนิตที่สุ่มผลิต (ซ้ำ = โอกาสมากขึ้น)
 }
 export const AI_LEVELS: Record<AiLevel, AiParams> = {
   easy: {
-    name: 'ง่าย', desc: 'ไม่บุกฐาน 7 นาทีแรก คิดช้า ไม่ดักรถถอดรหัส ไม่วิจัย ไม่มีเงินโบนัส', col: '#7dff9a',
-    income: 0, startBonus: 0, think: 3, grace: 420, wave: 8, waveStep: 1, waveMax: 12, respond: false, hunt: 0, pickup: false, research: false, turrets: 1,
-    units: ['rifle', 'rifle', 'rifle', 'tank', 'tank', 'rocket'],
+    name: 'ง่าย', desc: 'ไม่บุกฐาน 8 นาทีแรก ทัพเล็ก (ไม่เกิน 8) รถขุดแร่คันเดียว ผลิตทีละคัน ไม่มีซูเปอร์เวพอน ไม่ดักรถถอดรหัส ไม่วิจัย', col: '#7dff9a',
+    income: 0, startBonus: 0, think: 4, grace: 480, wave: 6, waveStep: 1, waveMax: 8, respond: false, hunt: 0, pickup: false, research: false, turrets: 0,
+    harvs: 1, queue: 1, armyMax: 8,
+    units: ['rifle', 'rifle', 'rifle', 'rifle', 'tank', 'tank'],
   },
   normal: {
-    name: 'ปกติ', desc: 'ไม่บุกฐาน 4 นาทีแรก แย่งซาก ขัดการถอดรหัส ดักรถถอดรหัสใกล้ๆ วิจัยอัปเกรด', col: '#f2a93b',
-    income: 7, startBonus: 0, think: 1.5, grace: 240, wave: 5, waveStep: 2, waveMax: 16, respond: true, hunt: 1100, pickup: true, research: true, turrets: 3,
-    units: ['rifle', 'rifle', 'tank', 'tank', 'rocket', 'rail', 'rail', 'ion'],
+    name: 'ปกติ', desc: 'ไม่บุกฐาน 5 นาทีแรก ทัพไม่เกิน 14 แย่งซาก ขัดการถอดรหัส ดักรถถอดรหัสใกล้ๆ วิจัยอัปเกรด', col: '#f2a93b',
+    income: 2, startBonus: 0, think: 2, grace: 300, wave: 6, waveStep: 2, waveMax: 12, respond: true, hunt: 900, pickup: true, research: true, turrets: 2,
+    harvs: 2, queue: 1, armyMax: 14,
+    units: ['rifle', 'rifle', 'rifle', 'tank', 'tank', 'rocket', 'rail', 'ion'],
   },
   hard: {
     name: 'ยาก', desc: 'บุกฐานตั้งแต่นาทีที่ 2 คิดเร็ว เงินโบนัสสูง ดักรถถอดรหัสทั่วแผนที่ เน้นยูนิตไฮบริด', col: '#ff4a2e',
     income: 14, startBonus: 1000, think: .8, grace: 120, wave: 5, waveStep: 3, waveMax: 22, respond: true, hunt: 2400, pickup: true, research: true, turrets: 4,
+    harvs: 2, queue: 2, armyMax: 99,
     units: ['rifle', 'tank', 'tank', 'rocket', 'rocket', 'rail', 'rail', 'rail', 'ion', 'ion'],
   },
 };
@@ -160,8 +166,8 @@ const BP_DESC_EN: Record<BPKey, string> = {
 const RUIN_EN: Record<RuinKind, string> = { outpost: 'Outpost Ruins', monolith: 'Monolith', citadel: 'Citadel' };
 const CAT_EN: Record<Cat, string> = { W: 'Weapon', B: 'Building', R: 'Resource' };
 const AI_EN: Record<AiLevel, [string, string]> = {
-  easy: ['Easy', 'No base attacks for 7 min, slow, no Rig hunting, no research, no bonus money'],
-  normal: ['Normal', 'No base attacks for 4 min, fights for ruins, blocks decryption, hunts nearby Rigs, researches'],
+  easy: ['Easy', 'No base attacks for 8 min, small army (max 8), one Harvester, trains one unit at a time, no superweapon, no Rig hunting, no research'],
+  normal: ['Normal', 'No base attacks for 5 min, army up to 14, contests ruins, disrupts decryption, hunts nearby Rigs, researches upgrades'],
   hard: ['Hard', 'Attacks from minute 2, fast, big bonus money, hunts Rigs map-wide, favors hybrid units'],
 };
 const thSaved = new Map<object, Record<string, string>>();
